@@ -1,0 +1,383 @@
+.pageHead {
+  composes: pageHead from "@/components/ui.module.css";
+}
+
+.h1 {
+  composes: h1 from "@/components/ui.module.css";
+}
+
+.sub {
+  composes: sub from "@/components/ui.module.css";
+}
+
+.btn {
+  composes: btn from "@/components/ui.module.css";
+}
+
+.btnPrimary {
+  composes: btnPrimary from "@/components/ui.module.css";
+}
+
+.mono {
+  composes: mono from "@/components/ui.module.css";
+}
+
+.muted {
+  composes: muted from "@/components/ui.module.css";
+}
+
+.required {
+  color: var(--danger);
+}
+
+/* ---- list toolbar ---- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.searchBox {
+  position: relative;
+  flex: 1 1 320px;
+  max-width: 460px;
+  display: block;
+}
+
+.searchBox svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-3);
+  pointer-events: none;
+}
+
+.searchInput {
+  composes: input from "@/components/ui.module.css";
+  padding-left: 42px;
+}
+
+.statusSelect {
+  composes: input from "@/components/ui.module.css";
+  width: auto;
+  min-width: 180px;
+  cursor: pointer;
+}
+
+.clear {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-2);
+  padding: 0 4px;
+}
+
+.clear:hover {
+  color: var(--brand);
+}
+
+/* ---- table ---- */
+.tableCard {
+  composes: tableCard from "@/components/ui.module.css";
+}
+
+.scroll {
+  composes: scroll from "@/components/ui.module.css";
+}
+
+.table {
+  composes: table from "@/components/ui.module.css";
+  min-width: 720px;
+}
+
+.table th.right {
+  text-align: right;
+}
+
+.poLink {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.customer {
+  font-weight: 600;
+}
+
+/* Compact FR-06.03 collection countdown, shown under the status pill only for Operations-stage rows. */
+.countdown {
+  display: block;
+  width: fit-content;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-top: 5px;
+  white-space: nowrap;
+}
+
+.countdownInfo {
+  composes: countdown;
+  background: var(--info-bg);
+  color: var(--info);
+}
+
+.countdownWarn {
+  composes: countdown;
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.countdownBad {
+  composes: countdown;
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 56px 24px 60px;
+  text-align: center;
+  color: var(--text-2);
+}
+
+.emptyIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--surface-sunken);
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+
+.emptyTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+.pagerLinks {
+  display: flex;
+  gap: 8px;
+}
+
+/* ---- notices ---- */
+.notice {
+  composes: alertSuccess from "@/components/ui.module.css";
+  margin-bottom: 20px;
+}
+
+.lockBanner {
+  composes: alertNeutral from "@/components/ui.module.css";
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.nextStep {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--brand-tint);
+  border: 1px solid var(--brand-tint-border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+/* ---- overview ---- */
+.overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.card {
+  composes: card from "@/components/ui.module.css";
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.cardTitle {
+  composes: cardTitle from "@/components/ui.module.css";
+}
+
+.lockedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-2);
+  background: var(--surface-sunken);
+  border-radius: 999px;
+  padding: 5px 10px;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 24px;
+  margin: 0;
+}
+
+.details > div {
+  min-width: 0;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+.fLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-3);
+  margin-bottom: 4px;
+}
+
+.fValue {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.fLocked {
+  color: var(--text-2);
+}
+
+.docs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.doc {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #efedea;
+}
+
+.doc:first-child {
+  padding-top: 0;
+}
+
+.doc:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.docIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--brand-tint);
+  color: var(--brand);
+  flex-shrink: 0;
+}
+
+.docText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.docName {
+  font-size: 14.5px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.docMeta {
+  font-size: 12.5px;
+  color: var(--text-3);
+}
+
+.record {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+}
+
+@media (max-width: 1000px) {
+  .overview {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .details {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hideMd {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hideSm {
+    display: none;
+  }
+}

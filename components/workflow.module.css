@@ -1,0 +1,487 @@
+/* Shared by the Inspection and Quotation screens. */
+.card {
+  composes: card from "./ui.module.css";
+  margin-bottom: 24px;
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.cardTitle {
+  composes: cardTitle from "./ui.module.css";
+  font-size: 17px;
+}
+
+.optional {
+  font-size: 13.5px;
+  font-weight: 400;
+  color: var(--text-3);
+}
+
+.text {
+  font-size: 15px;
+  color: var(--text-2);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.tbc {
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.notice {
+  composes: alertSuccess from "./ui.module.css";
+  margin-bottom: 20px;
+}
+
+.warn {
+  composes: alertWarn from "./ui.module.css";
+  margin-bottom: 20px;
+}
+
+.error {
+  composes: alertError from "./ui.module.css";
+  margin-bottom: 20px;
+}
+
+.info {
+  composes: alertInfo from "./ui.module.css";
+  margin-bottom: 20px;
+}
+
+.list {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-weight: 500;
+}
+
+/* ---- choose inspection type ---- */
+.types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 4px 0 20px;
+}
+
+.type {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 18px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.type:hover {
+  border-color: var(--brand);
+}
+
+.typeSelected {
+  border-color: var(--brand);
+  background: var(--brand-tint);
+  box-shadow: var(--ring);
+}
+
+.type input {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--brand);
+  flex-shrink: 0;
+}
+
+.typeName {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.typeText {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+/* ---- upload zone ---- */
+.drop {
+  composes: drop from "./ui.module.css";
+}
+
+.dragging {
+  composes: dragging from "./ui.module.css";
+}
+
+.dropTitle {
+  composes: dropTitle from "./ui.module.css";
+}
+
+.dropHint {
+  composes: dropHint from "./ui.module.css";
+}
+
+.fileProblem {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--danger);
+  margin-top: 10px;
+}
+
+/* ---- table ---- */
+.ack {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14.5px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.ack input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--brand);
+  cursor: pointer;
+}
+
+.scroll {
+  composes: scroll from "./ui.module.css";
+  margin: 0 -8px;
+  padding: 0 8px;
+}
+
+.table {
+  composes: table from "./ui.module.css";
+  min-width: 860px;
+}
+
+.table th {
+  padding: 10px 8px;
+  background: none;
+}
+
+.table td {
+  padding: 10px 8px;
+  vertical-align: top;
+}
+
+.table tbody tr:hover {
+  background: none;
+}
+
+.right {
+  text-align: right !important;
+}
+
+.cell {
+  composes: input from "./ui.module.css";
+  min-height: 40px;
+  padding: 8px 10px;
+  font-size: 14.5px;
+}
+
+.cellInvalid {
+  composes: invalid from "./ui.module.css";
+}
+
+/* Auto-growing table-cell textarea (TextAreaCell) - remarks and other longer free-text fields. */
+.remarksCell {
+  composes: cell;
+  display: block;
+  width: 100%;
+  min-width: 160px;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.45;
+  font-family: inherit;
+}
+
+.num {
+  text-align: right;
+  min-width: 100px;
+}
+
+.locked {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-height: 40px;
+  min-width: 100px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  color: var(--text-2);
+}
+
+.plain {
+  padding: 10px 0;
+}
+
+.cellError {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--danger);
+  margin-top: 4px;
+}
+
+.iconBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-2);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    background-color 0.15s;
+}
+
+.iconBtn:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: var(--danger-bg);
+}
+
+.emptyRows {
+  text-align: center;
+  color: var(--text-3);
+  font-size: 14.5px;
+  padding: 28px 0 12px;
+}
+
+.linkBtn {
+  composes: linkBtn from "./ui.module.css";
+  margin-top: 16px;
+}
+
+/* ---- expense ---- */
+.expense {
+  max-width: 300px;
+}
+
+.label {
+  composes: label from "./ui.module.css";
+}
+
+.req {
+  composes: req from "./ui.module.css";
+}
+
+.moneyWrap {
+  position: relative;
+}
+
+.rupee {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-3);
+  font-size: 15px;
+}
+
+.money {
+  padding-left: 30px;
+  text-align: left;
+}
+
+.expenseValue {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* ---- photos ---- */
+.thumbs {
+  composes: thumbs from "./ui.module.css";
+  margin-top: 16px;
+}
+
+.thumb {
+  composes: thumb from "./ui.module.css";
+  width: 104px;
+}
+
+.thumbBox {
+  composes: thumbBox from "./ui.module.css";
+  width: 104px;
+  height: 104px;
+}
+
+.thumbRemove {
+  composes: thumbRemove from "./ui.module.css";
+}
+
+.thumbName {
+  composes: thumbName from "./ui.module.css";
+}
+
+/* What a photo shows (its tag), under a read-only thumbnail. */
+.thumbTag {
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+}
+
+/* Editable photo cards: wide enough for the "what it shows" dropdown and typed name. */
+.tagGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 18px 16px;
+  margin-top: 16px;
+}
+
+.tagCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.tagImage {
+  display: block;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--surface-sunken);
+}
+
+.tagImage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---- actions ---- */
+.actions {
+  position: sticky;
+  bottom: 12px;
+  z-index: 5;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 14px 18px;
+}
+
+.btn {
+  composes: btn from "./ui.module.css";
+  min-height: 42px;
+  padding: 0 20px;
+}
+
+.btnPrimary {
+  composes: btnPrimary from "./ui.module.css";
+  min-height: 42px;
+  padding: 0 24px;
+}
+
+.text + .btnPrimary,
+.text + .btn {
+  margin-top: 18px;
+}
+
+.status {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--warning);
+  margin-right: auto;
+}
+
+.remaining {
+  font-size: 13.5px;
+  color: var(--text-2);
+  text-align: right;
+  margin-top: 12px;
+}
+
+.remaining ul {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.confirm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--warning);
+}
+
+.meta {
+  font-size: 13.5px;
+  color: var(--text-3);
+  margin: 0 0 16px;
+}
+
+.importNote {
+  margin: 14px 0 0;
+}
+
+.confirmActions {
+  display: flex;
+  gap: 8px;
+}
+
+/* an action row inside a card rather than the page-level sticky bar */
+.actionsTop {
+  position: static;
+  background: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  margin-top: 16px;
+}
+
+@media (max-width: 560px) {
+  .card {
+    padding: 20px;
+  }
+
+  .actions {
+    bottom: 8px;
+    padding: 12px;
+  }
+}

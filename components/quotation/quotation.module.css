@@ -1,0 +1,373 @@
+/* Quotation-specific styles; shared workflow styles live in ../workflow.module.css. */
+.pill {
+  composes: pill from "../ui.module.css";
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
+.pill::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.Draft {
+  background: var(--surface-sunken);
+  color: var(--text-2);
+}
+
+.Submitted {
+  background: var(--info-bg);
+  color: var(--info);
+}
+
+.Approved {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.Returned {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.meta {
+  font-size: 14px;
+  color: var(--text-3);
+}
+
+.tfoot td {
+  padding: 16px 8px 4px;
+  font-weight: 700;
+  border-bottom: none;
+}
+
+.grand {
+  font-size: 18px;
+}
+
+.subRow td {
+  padding: 10px 8px 0;
+  font-weight: 600;
+  color: var(--text-2);
+  border-bottom: none;
+}
+
+.gstField {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.gstInput {
+  width: 84px;
+  min-height: 34px;
+  padding: 5px 8px;
+}
+
+.amount {
+  text-align: right;
+  white-space: nowrap;
+  padding: 10px 0;
+}
+
+.terms {
+  font-size: 15px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+.textarea {
+  composes: input from "../ui.module.css";
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.termsUpload {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+/* ---- signature ---- */
+.sigTabs {
+  display: inline-flex;
+  gap: 4px;
+  background: var(--surface-sunken);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  margin-bottom: 16px;
+}
+
+.sigTab {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.sigTab:hover {
+  color: var(--text);
+}
+
+.sigTabActive,
+.sigTabActive:hover {
+  background: var(--surface);
+  color: var(--brand);
+  box-shadow: var(--shadow-sm);
+}
+
+.pad {
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 440 / 150;
+  background: var(--surface);
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius);
+  touch-action: none;
+  cursor: crosshair;
+  display: block;
+}
+
+.padHint {
+  font-size: 13.5px;
+  color: var(--text-3);
+  margin: 8px 0 12px;
+}
+
+.padActions {
+  display: flex;
+  gap: 10px;
+}
+
+.sigCurrent {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.sigImage {
+  max-width: 240px;
+  max-height: 90px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  display: block;
+}
+
+.sigName {
+  font-size: 14px;
+  color: var(--text-2);
+  margin-bottom: 8px;
+}
+
+/* ---- review / download ---- */
+.lockCard {
+  composes: alertNeutral from "../ui.module.css";
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.downloadCard {
+  composes: alertSuccess from "../ui.module.css";
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.linkButton {
+  composes: btnPrimary from "../ui.module.css";
+  min-height: 42px;
+  padding: 0 22px;
+}
+
+.noteBox {
+  composes: input from "../ui.module.css";
+  min-height: 84px;
+  resize: vertical;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+
+.reviewRow {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.queueLink {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.lead {
+  margin: 6px 0 20px;
+}
+
+/* ---- client response (Module 4) ---- */
+.decisionOptions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 4px 0 20px;
+}
+
+.decisionOption {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 14px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background-color 0.15s;
+}
+
+.decisionOption:hover {
+  border-color: var(--brand);
+}
+
+.decisionSelected {
+  border-color: var(--brand);
+  background: var(--brand-tint);
+}
+
+.decisionOption input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--brand);
+  flex-shrink: 0;
+}
+
+.decisionOption > span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.decisionHint {
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--text-2);
+  line-height: 1.4;
+}
+
+.decisionApproved {
+  color: var(--success);
+}
+
+.decisionRejected {
+  color: var(--danger);
+}
+
+.decisionRevisionRequired {
+  color: var(--warning);
+}
+
+/* ---- version history ---- */
+.historyList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.historyRow {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #efedea;
+  font-size: 14px;
+}
+
+.historyRow:last-child {
+  border-bottom: none;
+}
+
+.historyVersion {
+  font-family: var(--mono);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.historyCurrent {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--brand);
+  background: var(--brand-tint);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.historyAmount {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.historyStatus {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.historyDate {
+  color: var(--text-3);
+  font-size: 12.5px;
+  white-space: nowrap;
+  text-align: right;
+  min-width: 140px;
+}
+
+@media (max-width: 640px) {
+  .historyRow {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 4px;
+  }
+
+  .historyDate {
+    text-align: left;
+    min-width: 0;
+  }
+}

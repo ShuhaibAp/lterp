@@ -1,0 +1,289 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(280px, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.card {
+  composes: card from "./ui.module.css";
+}
+
+.cardTitle {
+  composes: cardTitle from "./ui.module.css";
+  font-size: 17px;
+}
+
+.cardHint {
+  font-size: 14px;
+  color: var(--text-2);
+  margin: 4px 0 22px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0 20px;
+}
+
+.field {
+  margin-bottom: 20px;
+  min-width: 0;
+}
+
+.card > .field:last-child,
+.card > .row:last-child .field {
+  margin-bottom: 0;
+}
+
+.label {
+  composes: label from "./ui.module.css";
+}
+
+.req {
+  composes: req from "./ui.module.css";
+}
+
+.opt {
+  composes: opt from "./ui.module.css";
+}
+
+.input {
+  composes: input from "./ui.module.css";
+}
+
+.textarea {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.invalid {
+  composes: invalid from "./ui.module.css";
+}
+
+.fieldError {
+  composes: fieldError from "./ui.module.css";
+}
+
+.alert {
+  composes: alertError from "./ui.module.css";
+}
+
+/* ---- attachments ---- */
+.drop {
+  composes: drop from "./ui.module.css";
+}
+
+.dragging {
+  composes: dragging from "./ui.module.css";
+}
+
+.dropIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--brand-tint);
+  color: var(--brand);
+  margin-bottom: 10px;
+}
+
+.dropTitle {
+  composes: dropTitle from "./ui.module.css";
+}
+
+.dropHint {
+  composes: dropHint from "./ui.module.css";
+}
+
+.problems {
+  margin: 12px 0 0;
+  padding: 0 0 0 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--danger);
+}
+
+.thumbs {
+  composes: thumbs from "./ui.module.css";
+}
+
+.thumb {
+  composes: thumb from "./ui.module.css";
+}
+
+.thumbBox {
+  composes: thumbBox from "./ui.module.css";
+}
+
+.ext {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-2);
+  font-family: var(--mono);
+}
+
+.thumbRemove {
+  composes: thumbRemove from "./ui.module.css";
+}
+
+.thumbName {
+  composes: thumbName from "./ui.module.css";
+}
+
+.existing {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.existingItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  font-size: 14.5px;
+  border-bottom: 1px solid #efedea;
+}
+
+.existingItem:last-child {
+  border-bottom: none;
+}
+
+.existingItem a {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.struck {
+  text-decoration: line-through;
+  color: var(--text-3);
+}
+
+.size {
+  font-size: 12.5px;
+  color: var(--text-3);
+}
+
+.linkBtn {
+  composes: linkBtn from "./ui.module.css";
+  font-size: 13.5px;
+}
+
+/* ---- summary ---- */
+.summary {
+  position: sticky;
+  top: 0;
+}
+
+.summaryTitle {
+  composes: cardTitle from "./ui.module.css";
+  margin-bottom: 18px;
+}
+
+.summaryLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+
+.poNumber {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-2);
+  font-family: var(--mono);
+  margin-bottom: 10px;
+}
+
+.tbc {
+  display: inline-block;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.rule {
+  border: none;
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0 14px;
+}
+
+.kv {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 14.5px;
+  padding: 7px 0;
+}
+
+.kv span {
+  color: var(--text-3);
+}
+
+.kv strong {
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.submit {
+  composes: btnPrimary from "./ui.module.css";
+  width: 100%;
+  min-height: 46px;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+.cancel {
+  display: block;
+  text-align: center;
+  margin-top: 14px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.cancel:hover {
+  color: var(--brand);
+}
+
+@media (max-width: 560px) {
+  .summary .card,
+  .card {
+    padding: 20px;
+  }
+}

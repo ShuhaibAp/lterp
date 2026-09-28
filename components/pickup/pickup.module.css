@@ -1,0 +1,81 @@
+/* Pickup-specific styles; shared workflow styles live in ../workflow.module.css. */
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0 20px;
+  margin-top: 18px;
+}
+
+.textarea {
+  min-height: 96px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.field {
+  margin-top: 18px;
+}
+
+.field:first-child {
+  margin-top: 0;
+}
+
+.lockCard {
+  composes: alertNeutral from "../ui.module.css";
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.reportCard {
+  composes: alertSuccess from "../ui.module.css";
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.linkButton {
+  composes: btnPrimary from "../ui.module.css";
+  min-height: 42px;
+  padding: 0 22px;
+}
+
+.summaryList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid #efedea;
+  font-size: 14.5px;
+}
+
+.summaryRow:last-child {
+  border-bottom: none;
+}
+
+.summaryRow span:first-child {
+  color: var(--text-3);
+}
+
+.summaryRow span:last-child {
+  font-weight: 600;
+  text-align: right;
+}
+
+.instructions {
+  white-space: pre-wrap;
+  font-size: 14.5px;
+  line-height: 1.55;
+  margin: 0;
+}
