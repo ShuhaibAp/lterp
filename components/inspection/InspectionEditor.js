@@ -2,7 +2,8 @@
 
 import { useRef, useState, useTransition } from "react";
 import { completeInspection, parseInspectionList, saveInspection } from "@/app/actions/inspection";
-import { LIST_EXTENSIONS, MAX_LIST_BYTES, MAX_REMARKS, UOMS } from "@/lib/inspection-constants";
+import { LIST_EXTENSIONS, MAX_LIST_BYTES, MAX_REMARKS } from "@/lib/inspection-constants";
+import UomSelect from "@/components/UomSelect";
 import { blankRow, remainingSteps, rowFromLine, toPayload, validateRows } from "@/lib/inspection-rows";
 import { formatBytes } from "@/lib/po-constants";
 import { autosaveLabel, useAutosave } from "@/lib/use-autosave";
@@ -19,12 +20,13 @@ const MAPPING_FIELDS = [
   { key: "clientQuantity", label: "Client Quantity", required: false },
 ];
 
-export default function InspectionEditor({ poId, initial }) {
+export default function InspectionEditor({ poId, initial, uoms: initialUoms }) {
   const [rows, setRows] = useState(() => initial.lines.map(rowFromLine));
   const [acknowledged, setAcknowledged] = useState(initial.acknowledged);
   const [expense, setExpense] = useState(initial.expenseTotal === null ? "" : String(initial.expenseTotal));
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState(null);
+  const [uoms, setUoms] = useState(initialUoms);
   const [confirming, setConfirming] = useState(false);
   const [importing, setImporting] = useState(false);
   const [importNote, setImportNote] = useState(null);
@@ -43,7 +45,7 @@ export default function InspectionEditor({ poId, initial }) {
   const { status: saveStatus, flush } = useAutosave({
     value: JSON.stringify(toPayload(rows, acknowledged, expense)),
     onSave: async () => {
-      const found = validateRows(rows, acknowledged, expense);
+      const found = validateRows(rows, acknowledged, expense, uoms);
       setErrors(found);
       if (Object.keys(found).length > 0) {
         setMessage({ kind: "error", text: "Fix the highlighted fields and try again." });
@@ -149,7 +151,7 @@ export default function InspectionEditor({ poId, initial }) {
   }
 
   function proceed() {
-    const found = validateRows(rows, acknowledged, expense);
+    const found = validateRows(rows, acknowledged, expense, uoms);
     setErrors(found);
     if (Object.keys(found).length > 0) {
       setMessage({ kind: "error", text: "Fix the highlighted fields and try again." });
@@ -280,20 +282,15 @@ export default function InspectionEditor({ poId, initial }) {
                     />
                   </td>
                   <td>
-                    <select
+                    <UomSelect
                       className={`${styles.cell} ${errors[`lines.${i}.uom`] ? styles.cellInvalid : ""}`}
                       value={row.uom}
-                      onChange={(e) => updateRow(row.key, "uom", e.target.value)}
-                      aria-label={`Unit of measure, row ${i + 1}`}
-                      aria-invalid={!!errors[`lines.${i}.uom`]}
-                    >
-                      <option value="">Select…</option>
-                      {UOMS.map((u) => (
-                        <option key={u} value={u}>
-                          {u}
-                        </option>
-                      ))}
-                    </select>
+                      uoms={uoms}
+                      onChange={(u) => updateRow(row.key, "uom", u)}
+                      onUomsChange={setUoms}
+                      label={`Unit of measure, row ${i + 1}`}
+                      invalid={!!errors[`lines.${i}.uom`]}
+                    />
                     {errors[`lines.${i}.uom`] && (
                       <div className={styles.cellError} role="alert">
                         {errors[`lines.${i}.uom`]}

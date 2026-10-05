@@ -1,11 +1,14 @@
 import Link from "next/link";
 import Icon from "@/components/Icon";
 import LockIcon from "@/components/LockIcon";
+import CustomerAccessCard from "@/components/CustomerAccessCard";
 import PoHeader from "@/components/PoHeader";
 import { requireRole } from "@/lib/dal";
 import { formatBytes, formatDate } from "@/lib/po-constants";
-import { getPurchaseOrder } from "@/lib/purchase-orders";
+import { getCustomerAccess, getPurchaseOrder } from "@/lib/purchase-orders";
 import styles from "../po.module.css";
+
+const AFTER_APPROVAL = ["Pickup", "Operations", "Factory", "Weighment", "AOR", "Final Reports"];
 
 export const metadata = { title: "Purchase Order — Cynosure MIS" };
 
@@ -25,6 +28,9 @@ export default async function PurchaseOrderPage({ params, searchParams }) {
   const po = await getPurchaseOrder(id);
 
   const isBd = user.role === "BD Team";
+  // Once the client has approved (Pickup onwards) BD and Admin can see and resend the customer-app invite.
+  const showAccess = (isBd || user.role === "Admin") && AFTER_APPROVAL.includes(po.status);
+  const access = showAccess ? await getCustomerAccess(po.id) : null;
   const isOperations = user.role === "Operations Team";
   const actions =
     isBd && !po.locked ? (
@@ -92,6 +98,7 @@ export default async function PurchaseOrderPage({ params, searchParams }) {
             <dl className={styles.details}>
               <Field label="Customer name" value={po.customer.name} locked={po.locked} />
               <Field label="Phone number" value={po.customer.phone} locked={po.locked} />
+              <Field label="Location" value={po.customer.location} locked={po.locked} full />
               <Field label="Address" value={po.customer.address} locked={po.locked} full />
               <Field label="Email address" value={po.customer.email} locked={po.locked} />
               <Field label="Service type" value={po.serviceType} locked={po.locked} />
@@ -130,6 +137,8 @@ export default async function PurchaseOrderPage({ params, searchParams }) {
               </ul>
             )}
           </section>
+
+          {access && <CustomerAccessCard poId={po.id} email={po.customer.email} initialStatus={access.status} />}
 
           <section className={styles.card}>
             <header className={styles.cardHead}>

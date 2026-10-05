@@ -1,0 +1,38 @@
+.adding {
+  min-width: 150px;
+}
+
+.addRow {
+  display: flex;
+  gap: 4px;
+}
+
+.addRow input {
+  min-width: 0;
+  flex: 1;
+}
+
+.btn {
+  flex: none;
+  min-width: 32px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.bad {
+  border-color: var(--danger, #b42318);
+}
+
+.problem {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--danger, #b42318);
+}

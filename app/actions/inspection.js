@@ -117,3 +117,12 @@ export async function saveInspectionRemarks(poId, payload) {
   if (!res.ok) return readFailure(res);
   return { ok: true };
 }
+
+/** Saves a new unit of measure for everyone. Returns `{ name }` (the saved spelling) or `{ message }`. */
+export async function addUom(name) {
+  await requireRole("BD Team", "Admin");
+  const res = await call("/uoms", { method: "POST", body: JSON.stringify({ name }) });
+  if (!res) return UNREACHABLE;
+  if (!res.ok) return readFailure(res);
+  return res.json();
+}

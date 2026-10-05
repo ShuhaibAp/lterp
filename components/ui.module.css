@@ -372,4 +372,18 @@
   .muted {
     color: var(--text-3);
   }
+
+  /* ---- touch screens ---- */
+  /* iOS Safari zooms the page when a focused field is under 16px, and 44px is
+     the minimum comfortable tap target. */
+  @media (max-width: 640px) {
+    .input {
+      font-size: 16px;
+    }
+
+    .btn,
+    .btnPrimary {
+      min-height: 44px;
+    }
+  }
 }

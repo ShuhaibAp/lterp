@@ -13,6 +13,7 @@ import shared from "@/components/workflow.module.css";
 import { requireRole } from "@/lib/dal";
 import { formatDate } from "@/lib/po-constants";
 import { getPurchaseOrder } from "@/lib/purchase-orders";
+import { getUoms } from "@/lib/inspection";
 import { getQuotation } from "@/lib/quotation";
 
 export const metadata = { title: "Quotation — Cynosure MIS" };
@@ -68,7 +69,7 @@ export default async function QuotationPage({ params, searchParams }) {
           </span>
         </div>
         <DownloadCard poId={id} unlocked={false} />
-        <QuotationEditor poId={id} quotation={q} reviewing={isAdmin} />
+        <QuotationEditor poId={id} quotation={q} uoms={await getUoms()} reviewing={isAdmin} />
       </>
     );
   } else {

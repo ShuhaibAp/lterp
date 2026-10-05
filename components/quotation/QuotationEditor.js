@@ -2,7 +2,8 @@
 
 import { useRef, useState, useTransition } from "react";
 import { approveQuotation, readTermsFile, returnQuotation, saveQuotation, submitQuotation } from "@/app/actions/quotation";
-import { formatMoney, formatQuantity, UOMS } from "@/lib/inspection-constants";
+import UomSelect from "@/components/UomSelect";
+import { formatMoney, formatQuantity } from "@/lib/inspection-constants";
 import { formatBytes, formatDate } from "@/lib/po-constants";
 import {
   asText,
@@ -28,8 +29,9 @@ import styles from "./quotation.module.css";
  * BD edits a draft or returned quotation and submits it. With `reviewing`, Admin edits a
  * submitted one and approves or returns it; unsaved edits are saved before either decision.
  */
-export default function QuotationEditor({ poId, quotation, reviewing = false }) {
+export default function QuotationEditor({ poId, quotation, uoms: initialUoms, reviewing = false }) {
   const manual = quotation.manualLines;
+  const [uoms, setUoms] = useState(initialUoms);
   const [rows, setRows] = useState(() => quotation.lines.map(rowFromLine));
   const [terms, setTerms] = useState(quotation.terms);
   const [gst, setGst] = useState(asText(quotation.gstPercent));
@@ -50,7 +52,7 @@ export default function QuotationEditor({ poId, quotation, reviewing = false }) 
   const { status: saveStatus, flush } = useAutosave({
     value: JSON.stringify(toPayload(rows, manual, terms, gst)),
     onSave: async () => {
-      const found = validateQuotation(rows, manual, terms, gst);
+      const found = validateQuotation(rows, manual, terms, gst, uoms);
       setErrors(found);
       if (Object.keys(found).length > 0) {
         setMessage({ kind: "error", text: "Fix the highlighted fields and try again." });
@@ -151,7 +153,7 @@ export default function QuotationEditor({ poId, quotation, reviewing = false }) 
 
   /** Validates, flushes any pending autosave (so nothing races it), then calls `action(poId, ...args)`. */
   function decide(action, ...args) {
-    const found = validateQuotation(rows, manual, terms, gst);
+    const found = validateQuotation(rows, manual, terms, gst, uoms);
     setErrors(found);
     if (Object.keys(found).length > 0) {
       setMessage({ kind: "error", text: "Fix the highlighted fields and try again." });
@@ -228,20 +230,15 @@ export default function QuotationEditor({ poId, quotation, reviewing = false }) 
                   <td>
                     {manual ? (
                       <>
-                        <select
+                        <UomSelect
                           className={`${shared.cell} ${errors[`lines.${i}.uom`] ? shared.cellInvalid : ""}`}
                           value={row.uom}
-                          onChange={(e) => updateRow(row.key, "uom", e.target.value)}
-                          aria-label={`Unit of measure, row ${i + 1}`}
-                          aria-invalid={!!errors[`lines.${i}.uom`]}
-                        >
-                          <option value="">Select…</option>
-                          {UOMS.map((u) => (
-                            <option key={u} value={u}>
-                              {u}
-                            </option>
-                          ))}
-                        </select>
+                          uoms={uoms}
+                          onChange={(u) => updateRow(row.key, "uom", u)}
+                          onUomsChange={setUoms}
+                          label={`Unit of measure, row ${i + 1}`}
+                          invalid={!!errors[`lines.${i}.uom`]}
+                        />
                         {errors[`lines.${i}.uom`] && (
                           <div className={shared.cellError} role="alert">
                             {errors[`lines.${i}.uom`]}

@@ -4,7 +4,7 @@ import StartInspection from "@/components/inspection/StartInspection";
 import styles from "@/components/workflow.module.css";
 import PoHeader from "@/components/PoHeader";
 import { requireRole } from "@/lib/dal";
-import { getInspection } from "@/lib/inspection";
+import { getInspection, getUoms } from "@/lib/inspection";
 import { getPurchaseOrder } from "@/lib/purchase-orders";
 
 export const metadata = { title: "Inspection — Cynosure MIS" };
@@ -32,7 +32,7 @@ export default async function InspectionPage({ params, searchParams }) {
       </div>
     );
   } else if (inspection.editable && isBd) {
-    body = <InspectionEditor poId={id} initial={inspection} />;
+    body = <InspectionEditor poId={id} initial={inspection} uoms={await getUoms()} />;
   } else {
     body = (
       <>

@@ -2,12 +2,11 @@
 
 import Link from "next/link";
 import { useActionState, useEffect, useRef, useState } from "react";
-import { createPurchaseOrder, updatePurchaseOrder } from "@/app/actions/purchase-orders";
+import { addServiceType, createPurchaseOrder, updatePurchaseOrder } from "@/app/actions/purchase-orders";
 import {
   ALLOWED_EXTENSIONS,
   MAX_FILE_BYTES,
   MAX_FILES,
-  SERVICE_TYPES,
   formatBytes,
 } from "@/lib/po-constants";
 import Icon from "./Icon";
@@ -17,14 +16,16 @@ import styles from "./PoForm.module.css";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function validate(v) {
+const ADD_NEW = "__add_new__";
+
+function validate(v, serviceTypes) {
   const errors = {};
   if (!v.customerName.trim()) errors.customerName = "Customer name is required";
   if (!v.phone.trim()) errors.phone = "Phone number is required";
   if (!v.address.trim()) errors.address = "Address is required";
   if (!v.email.trim()) errors.email = "Email address is required";
   else if (!EMAIL_RE.test(v.email.trim())) errors.email = "Enter a valid email address";
-  if (!SERVICE_TYPES.includes(v.serviceType)) errors.serviceType = "Select a service type";
+  if (!serviceTypes.includes(v.serviceType)) errors.serviceType = "Select a service type";
   return errors;
 }
 
@@ -46,7 +47,7 @@ function Field({ label, required, optional, error, children, htmlFor }) {
   );
 }
 
-export default function PoForm({ mode, po }) {
+export default function PoForm({ mode, po, serviceTypes: initialServiceTypes }) {
   const isEdit = mode === "edit";
   const action = isEdit ? updatePurchaseOrder.bind(null, po.id) : createPurchaseOrder;
   const [state, formAction, pending] = useActionState(action, undefined);
@@ -55,11 +56,16 @@ export default function PoForm({ mode, po }) {
     customerName: po?.customer.name ?? "",
     phone: po?.customer.phone ?? "",
     address: po?.customer.address ?? "",
+    location: po?.customer.location ?? "",
     email: po?.customer.email ?? "",
     serviceType: po?.serviceType ?? "",
     poInstructions: po?.poInstructions ?? "",
   });
   const [errors, setErrors] = useState({});
+  const [serviceTypes, setServiceTypes] = useState(initialServiceTypes);
+  const [newType, setNewType] = useState(null); // null = closed, otherwise the text being typed
+  const [newTypeError, setNewTypeError] = useState("");
+  const [savingType, setSavingType] = useState(false);
   const [files, setFiles] = useState([]);
   const [fileProblems, setFileProblems] = useState([]);
   const [removedIds, setRemovedIds] = useState([]);
@@ -97,6 +103,35 @@ export default function PoForm({ mode, po }) {
         return rest;
       });
     };
+  }
+
+  function chooseServiceType(e) {
+    if (e.target.value === ADD_NEW) {
+      setNewType("");
+      setNewTypeError("");
+    } else {
+      setNewType(null);
+      setValue("serviceType")(e);
+    }
+  }
+
+  async function saveNewType() {
+    const name = newType.trim().replace(/s+/g, " ");
+    if (!name) {
+      setNewTypeError("Enter a name for the new type");
+      return;
+    }
+    setSavingType(true);
+    const result = await addServiceType(name);
+    setSavingType(false);
+    if (!result?.name) {
+      setNewTypeError(result?.message ?? "Could not save the new type");
+      return;
+    }
+    setServiceTypes((list) => (list.includes(result.name) ? list : [...list, result.name]));
+    setValues((v) => ({ ...v, serviceType: result.name }));
+    setErrors(({ serviceType: _removed, ...rest }) => rest);
+    setNewType(null);
   }
 
   function addFiles(list) {
@@ -139,7 +174,12 @@ export default function PoForm({ mode, po }) {
   }
 
   function handleSubmit(formData) {
-    const found = validate(values);
+    if (newType !== null) {
+      setNewTypeError("Add the new type, or cancel, before saving");
+      document.getElementById("po-serviceType")?.focus();
+      return;
+    }
+    const found = validate(values, serviceTypes);
     if (Object.keys(found).length > 0) {
       setErrors(found);
       const first = ["customerName", "phone", "address", "email", "serviceType"].find((k) => found[k]);
@@ -214,6 +254,18 @@ export default function PoForm({ mode, po }) {
             </Field>
           </div>
 
+          <Field label="Location" optional htmlFor="po-location">
+            <input
+              id="po-location"
+              name="location"
+              className={styles.input}
+              value={values.location}
+              onChange={setValue("location")}
+              placeholder="Area or locality"
+              maxLength={200}
+            />
+          </Field>
+
           <Field label="Address" required error={errors.address} htmlFor="po-address">
             <textarea
               id="po-address"
@@ -240,18 +292,53 @@ export default function PoForm({ mode, po }) {
                 id="po-serviceType"
                 name="serviceType"
                 className={`${styles.input} ${errors.serviceType ? styles.invalid : ""}`}
-                value={values.serviceType}
-                onChange={setValue("serviceType")}
+                value={newType !== null ? ADD_NEW : values.serviceType}
+                onChange={chooseServiceType}
                 aria-invalid={!!errors.serviceType}
                 aria-describedby={errors.serviceType ? "po-serviceType-error" : undefined}
               >
                 <option value="">Select service type…</option>
-                {SERVICE_TYPES.map((s) => (
+                {serviceTypes.map((s) => (
                   <option key={s} value={s}>
                     {s}
                   </option>
                 ))}
+                <option value={ADD_NEW}>+ Add new type…</option>
               </select>
+              {newType !== null && (
+                <div className={styles.newType}>
+                  <input
+                    className={`${styles.input} ${newTypeError ? styles.invalid : ""}`}
+                    value={newType}
+                    onChange={(e) => {
+                      setNewType(e.target.value);
+                      setNewTypeError("");
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        saveNewType();
+                      }
+                    }}
+                    placeholder="New PO type name"
+                    maxLength={60}
+                    autoFocus
+                    aria-label="New PO type name"
+                    aria-invalid={!!newTypeError}
+                  />
+                  <button type="button" className={styles.btnAdd} onClick={saveNewType} disabled={savingType}>
+                    {savingType ? "Saving…" : "Add"}
+                  </button>
+                  <button type="button" className={styles.btnSecondary} onClick={() => setNewType(null)} disabled={savingType}>
+                    Cancel
+                  </button>
+                  {newTypeError && (
+                    <div className={styles.fieldError} role="alert">
+                      {newTypeError}
+                    </div>
+                  )}
+                </div>
+              )}
             </Field>
           </div>
 

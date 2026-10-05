@@ -6,7 +6,7 @@ import { readFailure, UNREACHABLE } from "@/lib/api-errors";
 import { requireRole } from "@/lib/dal";
 import { getSessionToken } from "@/lib/session";
 
-const TEXT_FIELDS = ["customerName", "address", "phone", "email", "serviceType", "poInstructions"];
+const TEXT_FIELDS = ["customerName", "address", "location", "phone", "email", "serviceType", "poInstructions"];
 const TOO_LARGE = "A file is too large. Each file can be up to 25 MB.";
 
 // Forward only the fields the backend knows about, and skip empty file slots.
@@ -46,4 +46,37 @@ export async function updatePurchaseOrder(id, _prev, formData) {
   if (!res) return UNREACHABLE;
   if (!res.ok) return readFailure(res, TOO_LARGE);
   redirect(`/purchase-orders/${id}?updated=1`);
+}
+
+/** Saves a new PO type for the whole BD team. Returns `{ name }` (the saved spelling) or `{ message }`. */
+export async function addServiceType(name) {
+  await requireRole("BD Team");
+  const token = await getSessionToken();
+  try {
+    const res = await apiFetch("/purchase-orders/service-types", {
+      method: "POST",
+      token,
+      body: JSON.stringify({ name }),
+    });
+    if (!res.ok) return readFailure(res);
+    return res.json();
+  } catch {
+    return UNREACHABLE;
+  }
+}
+
+/** Sends (or re-sends) the customer-app invite. Returns `{ status, emailed, link?, reason? }` or `{ message }`. */
+export async function inviteCustomer(poId) {
+  await requireRole("BD Team", "Admin");
+  const token = await getSessionToken();
+  try {
+    const res = await apiFetch(`/purchase-orders/${encodeURIComponent(poId)}/customer-access`, {
+      method: "POST",
+      token,
+    });
+    if (!res.ok) return readFailure(res);
+    return res.json();
+  } catch {
+    return UNREACHABLE;
+  }
 }

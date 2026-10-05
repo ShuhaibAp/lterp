@@ -1,11 +1,13 @@
 import PoForm from "@/components/PoForm";
 import { requireRole } from "@/lib/dal";
+import { getServiceTypes } from "@/lib/purchase-orders";
 import styles from "../po.module.css";
 
 export const metadata = { title: "New PO — Cynosure MIS" };
 
 export default async function NewPurchaseOrderPage() {
   await requireRole("BD Team");
+  const serviceTypes = await getServiceTypes();
 
   return (
     <>
@@ -18,7 +20,7 @@ export default async function NewPurchaseOrderPage() {
           </p>
         </div>
       </div>
-      <PoForm mode="create" />
+      <PoForm mode="create" serviceTypes={serviceTypes} />
     </>
   );
 }

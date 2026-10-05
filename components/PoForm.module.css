@@ -287,3 +287,29 @@
     padding: 20px;
   }
 }
+
+.btnSecondary {
+  composes: btn from "./ui.module.css";
+}
+
+.newType {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.newType .input {
+  flex: 1 1 200px;
+  width: auto;
+}
+
+.newType .fieldError {
+  flex-basis: 100%;
+  margin-top: 0;
+}
+
+.btnAdd {
+  composes: btnPrimary from "./ui.module.css";
+}

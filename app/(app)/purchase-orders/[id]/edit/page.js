@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import PoForm from "@/components/PoForm";
 import { requireRole } from "@/lib/dal";
-import { getPurchaseOrder } from "@/lib/purchase-orders";
+import { getPurchaseOrder, getServiceTypes } from "@/lib/purchase-orders";
 import styles from "../../po.module.css";
 
 export const metadata = { title: "Edit PO — Cynosure MIS" };
@@ -9,7 +9,7 @@ export const metadata = { title: "Edit PO — Cynosure MIS" };
 export default async function EditPurchaseOrderPage({ params }) {
   await requireRole("BD Team");
   const { id } = await params;
-  const po = await getPurchaseOrder(id);
+  const [po, serviceTypes] = await Promise.all([getPurchaseOrder(id), getServiceTypes()]);
   if (po.locked) redirect(`/purchase-orders/${id}`);
 
   return (
@@ -22,7 +22,7 @@ export default async function EditPurchaseOrderPage({ params }) {
           </p>
         </div>
       </div>
-      <PoForm mode="edit" po={po} />
+      <PoForm mode="edit" po={po} serviceTypes={serviceTypes} />
     </>
   );
 }
