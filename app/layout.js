@@ -8,6 +8,7 @@ const barlow = Barlow({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://cynosure.reviens.in"),
   title: "Cynosure MIS",
   description: "Cynosure Recycling — MIS portal",
 };
