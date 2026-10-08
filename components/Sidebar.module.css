@@ -93,6 +93,20 @@
   color: var(--brand-hover);
 }
 
+.badge {
+  margin-left: auto;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .foot {
   padding: 18px 26px;
   border-top: 1px solid var(--sidebar-border);

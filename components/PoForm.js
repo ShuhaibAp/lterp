@@ -47,17 +47,31 @@ function Field({ label, required, optional, error, children, htmlFor }) {
   );
 }
 
-export default function PoForm({ mode, po, serviceTypes: initialServiceTypes }) {
+export default function PoForm({
+  mode,
+  po,
+  serviceTypes: initialServiceTypes,
+  returningCustomers = [],
+  initialReturningId = "",
+  requestId = "",
+  customerLocked = false,
+}) {
   const isEdit = mode === "edit";
   const action = isEdit ? updatePurchaseOrder.bind(null, po.id) : createPurchaseOrder;
   const [state, formAction, pending] = useActionState(action, undefined);
 
+  // A returning customer (already has a customer-app login) fills the form with their latest details.
+  const start = isEdit ? null : returningCustomers.find((c) => c.id === initialReturningId);
+  const [returningId, setReturningId] = useState(start?.id ?? "");
+  // Name and email identify a customer who has a login, so they can't be retyped on a PO.
+  const identityLocked = customerLocked || !!returningId;
+
   const [values, setValues] = useState({
-    customerName: po?.customer.name ?? "",
-    phone: po?.customer.phone ?? "",
-    address: po?.customer.address ?? "",
-    location: po?.customer.location ?? "",
-    email: po?.customer.email ?? "",
+    customerName: po?.customer.name ?? start?.name ?? "",
+    phone: po?.customer.phone ?? start?.phone ?? "",
+    address: po?.customer.address ?? start?.address ?? "",
+    location: po?.customer.location ?? start?.location ?? "",
+    email: po?.customer.email ?? start?.email ?? "",
     serviceType: po?.serviceType ?? "",
     poInstructions: po?.poInstructions ?? "",
   });
@@ -132,6 +146,26 @@ export default function PoForm({ mode, po, serviceTypes: initialServiceTypes }) 
     setValues((v) => ({ ...v, serviceType: result.name }));
     setErrors(({ serviceType: _removed, ...rest }) => rest);
     setNewType(null);
+  }
+
+  function chooseReturning(e) {
+    const picked = returningCustomers.find((c) => c.id === e.target.value);
+    setErrors({});
+    if (!picked) {
+      // Back to a new customer: clear what the previous pick filled in.
+      setReturningId("");
+      setValues((v) => ({ ...v, customerName: "", phone: "", address: "", location: "", email: "" }));
+      return;
+    }
+    setReturningId(picked.id);
+    setValues((v) => ({
+      ...v,
+      customerName: picked.name,
+      phone: picked.phone,
+      address: picked.address,
+      location: picked.location,
+      email: picked.email,
+    }));
   }
 
   function addFiles(list) {
@@ -209,6 +243,26 @@ export default function PoForm({ mode, po, serviceTypes: initialServiceTypes }) 
           <h2 className={styles.cardTitle}>Customer details</h2>
           <p className={styles.cardHint}>Who the purchase order is from and how to reach them.</p>
 
+          {!isEdit && returningCustomers.length > 0 && (
+            <Field label="Returning customer" optional htmlFor="po-returning">
+              <select id="po-returning" className={styles.input} value={returningId} onChange={chooseReturning}>
+                <option value="">New customer</option>
+                {returningCustomers.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} — {c.email}
+                  </option>
+                ))}
+              </select>
+              {returningId && (
+                <p className={styles.cardHint}>
+                  Showing their latest details. Changes to the address, location or phone are saved for their next order too.
+                </p>
+              )}
+            </Field>
+          )}
+          {returningId && <input type="hidden" name="existingCustomerId" value={returningId} />}
+          {requestId && <input type="hidden" name="orderRequestId" value={requestId} />}
+
           <Field label="Customer name" required error={errors.customerName} htmlFor="po-customerName">
             <input
               id="po-customerName"
@@ -216,6 +270,7 @@ export default function PoForm({ mode, po, serviceTypes: initialServiceTypes }) 
               className={`${styles.input} ${errors.customerName ? styles.invalid : ""}`}
               value={values.customerName}
               onChange={setValue("customerName")}
+              readOnly={identityLocked}
               placeholder="e.g. Wipro Asset Recovery"
               maxLength={200}
               aria-invalid={!!errors.customerName}
@@ -246,6 +301,7 @@ export default function PoForm({ mode, po, serviceTypes: initialServiceTypes }) 
                 className={`${styles.input} ${errors.email ? styles.invalid : ""}`}
                 value={values.email}
                 onChange={setValue("email")}
+                readOnly={identityLocked}
                 placeholder="procurement@customer.com"
                 maxLength={254}
                 aria-invalid={!!errors.email}

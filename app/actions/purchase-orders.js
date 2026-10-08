@@ -6,7 +6,7 @@ import { readFailure, UNREACHABLE } from "@/lib/api-errors";
 import { requireRole } from "@/lib/dal";
 import { getSessionToken } from "@/lib/session";
 
-const TEXT_FIELDS = ["customerName", "address", "location", "phone", "email", "serviceType", "poInstructions"];
+const TEXT_FIELDS = ["customerName", "address", "location", "phone", "email", "serviceType", "poInstructions", "existingCustomerId", "orderRequestId"];
 const TOO_LARGE = "A file is too large. Each file can be up to 25 MB.";
 
 // Forward only the fields the backend knows about, and skip empty file slots.

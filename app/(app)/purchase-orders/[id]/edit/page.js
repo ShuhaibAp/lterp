@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import PoForm from "@/components/PoForm";
 import { requireRole } from "@/lib/dal";
-import { getPurchaseOrder, getServiceTypes } from "@/lib/purchase-orders";
+import { getCustomerAccess, getPurchaseOrder, getServiceTypes } from "@/lib/purchase-orders";
 import styles from "../../po.module.css";
 
 export const metadata = { title: "Edit PO — Cynosure MIS" };
@@ -11,6 +11,8 @@ export default async function EditPurchaseOrderPage({ params }) {
   const { id } = await params;
   const [po, serviceTypes] = await Promise.all([getPurchaseOrder(id), getServiceTypes()]);
   if (po.locked) redirect(`/purchase-orders/${id}`);
+  // A customer with a customer-app login keeps their name and email; only the rest can change.
+  const { status } = await getCustomerAccess(id);
 
   return (
     <>
@@ -22,7 +24,7 @@ export default async function EditPurchaseOrderPage({ params }) {
           </p>
         </div>
       </div>
-      <PoForm mode="edit" po={po} serviceTypes={serviceTypes} />
+      <PoForm mode="edit" po={po} serviceTypes={serviceTypes} customerLocked={status === "active"} />
     </>
   );
 }

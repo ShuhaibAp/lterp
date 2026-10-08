@@ -7,7 +7,7 @@ import { activeHref, navForRole } from "@/lib/nav";
 import Icon from "./Icon";
 import styles from "./Sidebar.module.css";
 
-export default function Sidebar({ role, open, onNavigate }) {
+export default function Sidebar({ role, badges = {}, open, onNavigate }) {
   const pathname = usePathname();
   const items = navForRole(role);
   const current = activeHref(pathname, items);
@@ -32,6 +32,11 @@ export default function Sidebar({ role, open, onNavigate }) {
             >
               <Icon name={item.icon} size={20} />
               <span>{item.label}</span>
+              {badges[item.badge] > 0 && (
+                <span className={styles.badge} aria-label={`${badges[item.badge]} new`}>
+                  {badges[item.badge]}
+                </span>
+              )}
             </Link>
           );
         })}

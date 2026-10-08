@@ -6,7 +6,7 @@ import Sidebar from "./Sidebar";
 import styles from "./Shell.module.css";
 
 // Sidebar + top bar + content. On narrow screens the sidebar becomes a drawer.
-export default function Shell({ user, children }) {
+export default function Shell({ user, badges, children }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function Shell({ user, children }) {
 
   return (
     <div className={styles.shell}>
-      <Sidebar role={user.role} open={menuOpen} onNavigate={() => setMenuOpen(false)} />
+      <Sidebar role={user.role} badges={badges} open={menuOpen} onNavigate={() => setMenuOpen(false)} />
       {menuOpen && <div className={styles.backdrop} onClick={() => setMenuOpen(false)} aria-hidden="true" />}
       <div className={styles.column}>
         <Header user={user} onMenu={() => setMenuOpen(true)} />
