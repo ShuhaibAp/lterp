@@ -38,6 +38,8 @@ function remainingSteps({ empty, loaded, slipEmpty, slipLoad, lines }) {
 export default function FactoryEditor({ poId, factory }) {
   const [empty, setEmpty] = useState(text(factory.weighmentEmptyKg));
   const [loaded, setLoaded] = useState(text(factory.weighmentLoadedKg));
+  const [output, setOutput] = useState(text(factory.outputWeightKg));
+  const [residue, setResidue] = useState(text(factory.residueWeightKg));
   const [lines, setLines] = useState(() => factory.lines.map(lineFromApi));
   const [slipEmpty, setSlipEmpty] = useState(factory.weighmentSlipEmpty);
   const [slipLoad, setSlipLoad] = useState(factory.weighmentSlipLoad);
@@ -64,6 +66,8 @@ export default function FactoryEditor({ poId, factory }) {
     const p = {};
     if (empty.trim() !== "") p.weighmentEmptyKg = Number(empty);
     if (loaded.trim() !== "") p.weighmentLoadedKg = Number(loaded);
+    if (output.trim() !== "") p.outputWeightKg = Number(output);
+    if (residue.trim() !== "") p.residueWeightKg = Number(residue);
     p.lines = lines.map((l) => ({
       id: l.id,
       processedQuantity: l.processedQuantity.trim() === "" ? null : Number(l.processedQuantity),
@@ -76,6 +80,8 @@ export default function FactoryEditor({ poId, factory }) {
     const found = {};
     if (empty.trim() !== "" && !WEIGHT_RE.test(empty)) found.weighmentEmptyKg = "Enter a weight in kg (up to 2 decimals)";
     if (loaded.trim() !== "" && !WEIGHT_RE.test(loaded)) found.weighmentLoadedKg = "Enter a weight in kg (up to 2 decimals)";
+    if (output.trim() !== "" && !WEIGHT_RE.test(output)) found.outputWeightKg = "Enter a weight in kg (up to 2 decimals)";
+    if (residue.trim() !== "" && !WEIGHT_RE.test(residue)) found.residueWeightKg = "Enter a weight in kg (up to 2 decimals)";
     lines.forEach((l, i) => {
       if (l.processedQuantity.trim() !== "" && !QTY_RE.test(l.processedQuantity)) {
         found[`lines.${i}.processedQuantity`] = "Enter a number (up to 3 decimals)";
@@ -175,6 +181,52 @@ export default function FactoryEditor({ poId, factory }) {
 
       <div className={shared.card}>
         <div className={shared.cardHead}>
+          <h2 className={shared.cardTitle}>
+            Output and residue <span className={shared.optional}>(optional)</span>
+          </h2>
+        </div>
+        <p className={shared.text}>
+          After processing, weigh the recycled output and the residue that could not be recycled. The Mass Flow Report uses
+          them to account for the inbound weight.
+        </p>
+        <div className={ops.fieldGrid}>
+          <div className={ops.field}>
+            <label className={shared.label} htmlFor="f-output">
+              Recycled output (kg)
+            </label>
+            <input
+              id="f-output"
+              inputMode="decimal"
+              className={`${shared.cell} ${errors.outputWeightKg ? shared.cellInvalid : ""}`}
+              value={output}
+              onChange={(e) => {
+                setOutput(e.target.value);
+                touched();
+              }}
+            />
+            {errors.outputWeightKg && <div className={shared.cellError}>{errors.outputWeightKg}</div>}
+          </div>
+          <div className={ops.field}>
+            <label className={shared.label} htmlFor="f-residue">
+              Residue (kg)
+            </label>
+            <input
+              id="f-residue"
+              inputMode="decimal"
+              className={`${shared.cell} ${errors.residueWeightKg ? shared.cellInvalid : ""}`}
+              value={residue}
+              onChange={(e) => {
+                setResidue(e.target.value);
+                touched();
+              }}
+            />
+            {errors.residueWeightKg && <div className={shared.cellError}>{errors.residueWeightKg}</div>}
+          </div>
+        </div>
+      </div>
+
+      <div className={shared.card}>
+        <div className={shared.cardHead}>
           <h2 className={shared.cardTitle}>Materials</h2>
           <span className={ops.hint}>Processed Quantity differing from Actual is highlighted.</span>
         </div>
@@ -251,7 +303,7 @@ export default function FactoryEditor({ poId, factory }) {
 
       {confirming && (
         <div className={shared.confirm} role="alert">
-          <span>Marking Factory complete locks this record and moves the PO to the Weighment stage.</span>
+          <span>Marking Factory complete locks this record, runs the weighment cross-check and creates the AOR.</span>
           <span className={shared.confirmActions}>
             <button type="button" className={shared.btn} onClick={() => setConfirming(false)}>
               Cancel

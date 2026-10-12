@@ -32,6 +32,14 @@ export default function FactorySummary({ poId, factory, canWriteTeardownLog }) {
             <span>Net Weight at Factory (Loaded − Empty)</span>
             <span>{kg(factory.netWeightKg)}</span>
           </li>
+          <li className={ops.summaryRow}>
+            <span>Recycled output</span>
+            <span>{kg(factory.outputWeightKg)}</span>
+          </li>
+          <li className={ops.summaryRow}>
+            <span>Residue</span>
+            <span>{kg(factory.residueWeightKg)}</span>
+          </li>
           {opsWeights && (
             <li className={ops.summaryRow}>
               <span>Net Weight recorded by Operations at pickup</span>

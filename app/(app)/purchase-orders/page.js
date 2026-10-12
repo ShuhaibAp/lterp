@@ -134,6 +134,13 @@ export default async function PurchaseOrdersPage({ searchParams }) {
                         <td className={styles.hideSm}>{po.serviceType}</td>
                         <td>
                           <StatusPill status={po.status} />
+                          {po.aorDueAt && (
+                            <span
+                              className={`${styles.countdown} ${new Date(po.aorDueAt) < new Date() ? styles.countdownBad : styles.countdownInfo}`}
+                            >
+                              AOR {new Date(po.aorDueAt) < new Date() ? "overdue since" : "due"} {formatDay(po.aorDueAt)}
+                            </span>
+                          )}
                           {countdown && (
                             <span className={`${styles.countdown} ${styles[COUNTDOWN_CLASS[countdown.tone]]}`}>
                               {countdown.text}

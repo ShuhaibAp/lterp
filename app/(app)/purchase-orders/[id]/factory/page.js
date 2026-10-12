@@ -11,7 +11,7 @@ import { getPurchaseOrder } from "@/lib/purchase-orders";
 export const metadata = { title: "Factory — Cynosure MIS" };
 
 const FLASH = {
-  completed: "Factory marked complete. The PO has moved to the Weighment stage.",
+  completed: "Factory marked complete. The weighment cross-check has run and the AOR has been created.",
 };
 
 export default async function FactoryPage({ params, searchParams }) {

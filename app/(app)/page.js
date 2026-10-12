@@ -56,11 +56,18 @@ export default async function DashboardPage() {
     );
   }
 
-  const [summary, approvals, operationsQueue, factoryQueue] = await Promise.all([
+  const [summary, approvals, operationsQueue, factoryQueue, closingQueue] = await Promise.all([
     getPoSummary(),
     isAdmin ? listPendingQuotations() : null,
     isOperations ? listPurchaseOrders({ status: "Operations", page: 1 }) : null,
     isFactory ? listPurchaseOrders({ status: "Factory", page: 1 }) : null,
+    // Admin: orders in the closing stages (a failed weighment check, an AOR to send, reports to generate).
+    isAdmin
+      ? Promise.all([
+          listPurchaseOrders({ status: "Weighment", page: 1 }),
+          listPurchaseOrders({ status: "AOR", page: 1 }),
+        ])
+      : null,
   ]);
   const { total, byStatus, rejected, recent } = summary;
   const completed = countOf(byStatus, "Final Reports");
@@ -271,6 +278,45 @@ export default async function DashboardPage() {
                       <span className={styles.rowSide}>
                         <StatusPill status={po.status} />
                         <span className={styles.rowDate}>{formatDay(po.createdAt)}</span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        )}
+
+        {isAdmin && (
+          <section className={styles.panel}>
+            <div className={styles.panelHead}>
+              <h2 className={styles.panelTitle}>Closing steps</h2>
+            </div>
+            {closingQueue[0].items.length + closingQueue[1].items.length === 0 ? (
+              <div className={styles.empty}>
+                <span className={styles.emptyIcon}>
+                  <Icon name="check" size={24} />
+                </span>
+                <div className={styles.emptyTitle}>All caught up</div>
+                <span>No orders are waiting on a weighment check, an AOR or the final reports.</span>
+              </div>
+            ) : (
+              <ul className={styles.list}>
+                {[...closingQueue[0].items, ...closingQueue[1].items].slice(0, 6).map((po) => (
+                  <li key={po.id}>
+                    <Link
+                      href={`/purchase-orders/${po.id}/${po.status === "Weighment" ? "weighment" : "aor"}`}
+                      className={styles.row}
+                    >
+                      <span className={styles.rowMain}>
+                        <span className={styles.rowTitle}>{po.customerName}</span>
+                        <span className={styles.rowSub}>
+                          <span className={ui.mono}>{po.poNumber}</span> ·{" "}
+                          {po.status === "Weighment" ? "Weighment check needs an explanation" : "AOR and final reports"}
+                        </span>
+                      </span>
+                      <span className={styles.rowSide}>
+                        <StatusPill status={po.status} />
                       </span>
                     </Link>
                   </li>

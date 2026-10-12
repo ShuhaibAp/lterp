@@ -15,6 +15,9 @@ const TABS = [
   { key: "pickup", label: "Pickup", path: "/pickup", roles: ALL_STAFF },
   { key: "operations", label: "Operations", path: "/operations", roles: ALL_STAFF },
   { key: "factory", label: "Factory", path: "/factory", roles: ALL_STAFF },
+  { key: "weighment", label: "Weighment", path: "/weighment", roles: ALL_STAFF },
+  { key: "aor", label: "AOR", path: "/aor", roles: ALL_STAFF },
+  { key: "reports", label: "Final Reports", path: "/reports", roles: ALL_STAFF },
 ];
 
 export default function PoHeader({ po, tab, role, actions }) {

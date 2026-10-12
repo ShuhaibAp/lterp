@@ -87,6 +87,26 @@ export default async function PurchaseOrderPage({ params, searchParams }) {
         </div>
       )}
 
+      {(isBd || user.role === "Admin") && po.status === "Weighment" && (
+        <div className={styles.nextStep}>
+          <span>The weighment cross-check needs attention: explain the weight difference to continue.</span>
+          <Link href={`/purchase-orders/${po.id}/weighment`} className={styles.btnPrimary}>
+            Go to Weighment
+            <Icon name="arrow-right" size={18} />
+          </Link>
+        </div>
+      )}
+
+      {user.role === "Admin" && po.status === "AOR" && (
+        <div className={styles.nextStep}>
+          <span>Next step: send the AOR to the client, then generate the final reports.</span>
+          <Link href={`/purchase-orders/${po.id}/aor`} className={styles.btnPrimary}>
+            Go to AOR
+            <Icon name="arrow-right" size={18} />
+          </Link>
+        </div>
+      )}
+
       {po.locked && (
         <div className={styles.lockBanner}>
           <LockIcon size={16} color="#5d5c58" />
