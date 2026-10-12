@@ -323,7 +323,7 @@ export default function OperationsEditor({ poId, operations, scheduledCollection
 
       {confirming && (
         <div className={shared.confirm} role="alert">
-          <span>Marking Operations complete locks this record and moves the PO to the Weighment stage.</span>
+          <span>Marking Operations complete locks this record and moves the PO to the Factory stage.</span>
           <span className={shared.confirmActions}>
             <button type="button" className={shared.btn} onClick={() => setConfirming(false)}>
               Cancel

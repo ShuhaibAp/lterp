@@ -4,7 +4,7 @@ import Icon from "./Icon";
 import StatusPill from "./StatusPill";
 import styles from "./PoHeader.module.css";
 
-const ALL_STAFF = ["BD Team", "Admin", "Operations Team"];
+const ALL_STAFF = ["BD Team", "Admin", "Operations Team", "Factory Team"];
 
 // Add a tab here when a module's screen is built. `roles` mirrors the SoW permission matrix -
 // Quotation has no Operations row at all, so that tab simply isn't offered to that role.
@@ -14,6 +14,7 @@ const TABS = [
   { key: "quotation", label: "Quotation", path: "/quotation", roles: ["BD Team", "Admin"] },
   { key: "pickup", label: "Pickup", path: "/pickup", roles: ALL_STAFF },
   { key: "operations", label: "Operations", path: "/operations", roles: ALL_STAFF },
+  { key: "factory", label: "Factory", path: "/factory", roles: ALL_STAFF },
 ];
 
 export default function PoHeader({ po, tab, role, actions }) {

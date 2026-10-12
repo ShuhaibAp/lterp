@@ -6,5 +6,6 @@ export async function GET(_request, { params }) {
     "BD Team",
     "Admin",
     "Operations Team",
+    "Factory Team",
   ]);
 }

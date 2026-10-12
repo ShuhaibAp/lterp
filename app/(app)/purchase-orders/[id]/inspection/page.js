@@ -10,7 +10,7 @@ import { getPurchaseOrder } from "@/lib/purchase-orders";
 export const metadata = { title: "Inspection — Cynosure MIS" };
 
 export default async function InspectionPage({ params, searchParams }) {
-  const user = await requireRole("BD Team", "Admin", "Operations Team");
+  const user = await requireRole("BD Team", "Admin", "Operations Team", "Factory Team");
   const { id } = await params;
   const { completed } = await searchParams;
   const [po, { inspection }] = await Promise.all([getPurchaseOrder(id), getInspection(id)]);

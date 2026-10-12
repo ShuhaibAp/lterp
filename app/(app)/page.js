@@ -29,9 +29,9 @@ export default async function DashboardPage() {
   const isAdmin = user.role === "Admin";
   const isBd = user.role === "BD Team";
   const isOperations = user.role === "Operations Team";
+  const isFactory = user.role === "Factory Team";
 
-  // Factory has no screens yet, so there is nothing to summarise for that role.
-  if (!isAdmin && !isBd && !isOperations) {
+  if (!isAdmin && !isBd && !isOperations && !isFactory) {
     return (
       <>
         <div className={ui.pageHead}>
@@ -56,10 +56,11 @@ export default async function DashboardPage() {
     );
   }
 
-  const [summary, approvals, operationsQueue] = await Promise.all([
+  const [summary, approvals, operationsQueue, factoryQueue] = await Promise.all([
     getPoSummary(),
     isAdmin ? listPendingQuotations() : null,
     isOperations ? listPurchaseOrders({ status: "Operations", page: 1 }) : null,
+    isFactory ? listPurchaseOrders({ status: "Factory", page: 1 }) : null,
   ]);
   const { total, byStatus, rejected, recent } = summary;
   const completed = countOf(byStatus, "Final Reports");
@@ -78,7 +79,15 @@ export default async function DashboardPage() {
             tone: "warn",
             href: "/purchase-orders?status=Operations",
           }
-        : {
+        : isFactory
+          ? {
+              label: "Awaiting your action",
+              value: countOf(byStatus, "Factory"),
+              icon: "approvals",
+              tone: "warn",
+              href: "/purchase-orders?status=Factory",
+            }
+          : {
             label: "Awaiting your action",
             value: countOf(byStatus, "Registration", "Inspection", "Quotation"),
             icon: "approvals",
@@ -253,6 +262,45 @@ export default async function DashboardPage() {
                 {operationsQueue.items.slice(0, 5).map((po) => (
                   <li key={po.id}>
                     <Link href={`/purchase-orders/${po.id}/operations`} className={styles.row}>
+                      <span className={styles.rowMain}>
+                        <span className={styles.rowTitle}>{po.customerName}</span>
+                        <span className={styles.rowSub}>
+                          <span className={ui.mono}>{po.poNumber}</span> · {po.serviceType}
+                        </span>
+                      </span>
+                      <span className={styles.rowSide}>
+                        <StatusPill status={po.status} />
+                        <span className={styles.rowDate}>{formatDay(po.createdAt)}</span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        )}
+
+        {isFactory && (
+          <section className={styles.panel}>
+            <div className={styles.panelHead}>
+              <h2 className={styles.panelTitle}>Needs your action</h2>
+              <Link href="/purchase-orders?status=Factory" className={styles.more}>
+                View all <Icon name="arrow-right" size={16} />
+              </Link>
+            </div>
+            {factoryQueue.items.length === 0 ? (
+              <div className={styles.empty}>
+                <span className={styles.emptyIcon}>
+                  <Icon name="check" size={24} />
+                </span>
+                <div className={styles.emptyTitle}>All caught up</div>
+                <span>No purchase orders are waiting on Factory right now.</span>
+              </div>
+            ) : (
+              <ul className={styles.list}>
+                {factoryQueue.items.slice(0, 5).map((po) => (
+                  <li key={po.id}>
+                    <Link href={`/purchase-orders/${po.id}/factory`} className={styles.row}>
                       <span className={styles.rowMain}>
                         <span className={styles.rowTitle}>{po.customerName}</span>
                         <span className={styles.rowSub}>

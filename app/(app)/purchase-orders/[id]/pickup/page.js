@@ -16,7 +16,7 @@ const FLASH = {
 };
 
 export default async function PickupPage({ params, searchParams }) {
-  const user = await requireRole("BD Team", "Admin", "Operations Team");
+  const user = await requireRole("BD Team", "Admin", "Operations Team", "Factory Team");
   const { id } = await params;
   const flags = await searchParams;
   const [po, data] = await Promise.all([getPurchaseOrder(id), getPickupRequest(id)]);

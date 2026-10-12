@@ -22,7 +22,7 @@ function Field({ label, value, locked, full }) {
 }
 
 export default async function PurchaseOrderPage({ params, searchParams }) {
-  const user = await requireRole("BD Team", "Admin", "Operations Team");
+  const user = await requireRole("BD Team", "Admin", "Operations Team", "Factory Team");
   const { id } = await params;
   const { created, updated } = await searchParams;
   const po = await getPurchaseOrder(id);
@@ -32,6 +32,7 @@ export default async function PurchaseOrderPage({ params, searchParams }) {
   const showAccess = (isBd || user.role === "Admin") && AFTER_APPROVAL.includes(po.status);
   const access = showAccess ? await getCustomerAccess(po.id) : null;
   const isOperations = user.role === "Operations Team";
+  const isFactory = user.role === "Factory Team";
   const actions =
     isBd && !po.locked ? (
       <Link href={`/purchase-orders/${po.id}/edit`} className={styles.btnPrimary}>
@@ -71,6 +72,16 @@ export default async function PurchaseOrderPage({ params, searchParams }) {
           <span>Next step: acknowledge the Inspection Report and record the collection.</span>
           <Link href={`/purchase-orders/${po.id}/operations`} className={styles.btnPrimary}>
             Go to Operations
+            <Icon name="arrow-right" size={18} />
+          </Link>
+        </div>
+      )}
+
+      {isFactory && po.status === "Factory" && (
+        <div className={styles.nextStep}>
+          <span>Next step: weigh the vehicle, upload both weighment slips and record what was processed.</span>
+          <Link href={`/purchase-orders/${po.id}/factory`} className={styles.btnPrimary}>
+            Go to Factory
             <Icon name="arrow-right" size={18} />
           </Link>
         </div>

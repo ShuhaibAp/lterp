@@ -25,7 +25,7 @@ function pageHref({ search, status }, page) {
 const FILTER_STATUSES = [...PO_STAGES, "Rejected"];
 
 export default async function PurchaseOrdersPage({ searchParams }) {
-  const user = await requireRole("BD Team", "Admin", "Operations Team");
+  const user = await requireRole("BD Team", "Admin", "Operations Team", "Factory Team");
   const params = await searchParams;
   const search = typeof params.search === "string" ? params.search.trim() : "";
   const status = FILTER_STATUSES.includes(params.status) ? params.status : "";

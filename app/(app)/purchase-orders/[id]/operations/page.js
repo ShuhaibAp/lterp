@@ -12,11 +12,11 @@ import { getPurchaseOrder } from "@/lib/purchase-orders";
 export const metadata = { title: "Operations — Cynosure MIS" };
 
 const FLASH = {
-  completed: "Operations marked complete. The PO has moved to the Weighment stage.",
+  completed: "Operations marked complete. The PO has moved to the Factory stage.",
 };
 
 export default async function OperationsPage({ params, searchParams }) {
-  const user = await requireRole("BD Team", "Admin", "Operations Team");
+  const user = await requireRole("BD Team", "Admin", "Operations Team", "Factory Team");
   const { id } = await params;
   const flags = await searchParams;
   const [po, data, pickupData] = await Promise.all([

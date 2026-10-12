@@ -1,0 +1,105 @@
+.card {
+  composes: card from "@/components/ui.module.css";
+  max-width: 640px;
+  margin-bottom: 24px;
+}
+
+.cardTitle {
+  composes: cardTitle from "@/components/ui.module.css";
+}
+
+.hint {
+  font-size: 14px;
+  color: var(--text-2);
+  margin: 4px 0 20px;
+}
+
+.field {
+  margin-bottom: 20px;
+}
+
+.label {
+  composes: label from "@/components/ui.module.css";
+}
+
+.input {
+  composes: input from "@/components/ui.module.css";
+}
+
+.fieldError {
+  composes: fieldError from "@/components/ui.module.css";
+}
+
+.alert {
+  composes: alertError from "@/components/ui.module.css";
+  margin-bottom: 16px;
+}
+
+.ok {
+  composes: alertSuccess from "@/components/ui.module.css";
+  margin-bottom: 16px;
+}
+
+.checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  cursor: pointer;
+}
+
+.check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--brand);
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btnPrimary {
+  composes: btnPrimary from "@/components/ui.module.css";
+}
+
+.btn {
+  composes: btn from "@/components/ui.module.css";
+}
+
+/* ---- audit + matrix tables ---- */
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+
+.filters .field {
+  margin: 0;
+}
+
+.details {
+  max-width: 360px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.cellYes {
+  font-weight: 600;
+}
+
+.cellNo {
+  color: var(--text-3);
+}
