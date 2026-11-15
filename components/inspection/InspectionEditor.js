@@ -41,6 +41,8 @@ export default function InspectionEditor({ poId, initial, uoms: initialUoms }) {
   const photosFlush = useRef(null);
 
   const steps = remainingSteps(rows, acknowledged, expense);
+  const latestPayload = useRef(null);
+  latestPayload.current = toPayload(rows, acknowledged, expense);
 
   const { status: saveStatus, flush } = useAutosave({
     value: JSON.stringify(toPayload(rows, acknowledged, expense)),
@@ -51,11 +53,22 @@ export default function InspectionEditor({ poId, initial, uoms: initialUoms }) {
         setMessage({ kind: "error", text: "Fix the highlighted fields and try again." });
         return false;
       }
-      const result = await saveInspection(poId, toPayload(rows, acknowledged, expense));
+      const sentPayload = toPayload(rows, acknowledged, expense);
+      const sentKey = JSON.stringify(sentPayload);
+      const sentKeys = rows.map((r) => r.key);
+      const result = await saveInspection(poId, sentPayload);
       if (result?.inspection) {
-        setRows(result.inspection.lines.map(rowFromLine));
-        setAcknowledged(result.inspection.acknowledged);
-        setExpense(result.inspection.expenseTotal === null ? "" : String(result.inspection.expenseTotal));
+        if (JSON.stringify(latestPayload.current) === sentKey) {
+          // Nothing changed while saving - safe to sync with the server's copy.
+          setRows(result.inspection.lines.map(rowFromLine));
+          setAcknowledged(result.inspection.acknowledged);
+          setExpense(result.inspection.expenseTotal === null ? "" : String(result.inspection.expenseTotal));
+        } else {
+          // The user kept typing during the save: don't overwrite their input with the stale
+          // response. Only attach server ids to newly-saved rows so they aren't duplicated.
+          const idByKey = new Map(sentKeys.map((k, i) => [k, result.inspection.lines[i]?.id]));
+          setRows((cur) => cur.map((r) => (r.id ? r : { ...r, id: idByKey.get(r.key) ?? null })));
+        }
         setErrors({});
         return true;
       }
