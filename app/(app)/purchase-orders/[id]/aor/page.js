@@ -7,7 +7,7 @@ import { getAor } from "@/lib/closeout";
 import { formatDate, formatDay } from "@/lib/po-constants";
 import { getPurchaseOrder } from "@/lib/purchase-orders";
 
-export const metadata = { title: "AOR — Cynosure MIS" };
+export const metadata = { title: "AOR — Lifecycle & Traceability ERP" };
 
 export default async function AorPage({ params }) {
   const user = await requireRole("BD Team", "Admin", "Operations Team", "Factory Team");

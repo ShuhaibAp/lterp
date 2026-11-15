@@ -1,6 +1,6 @@
 # service-app
 
-Staff portal for **Cynosure MIS** (BD Team, Operations, Factory and Admin). It talks only to `cyn-server`; the customer-facing portal is a separate app (`customer-app`).
+Staff portal for **Lifecycle & Traceability ERP** (BD Team, Operations, Factory and Admin). It talks only to `cyn-server`; the customer-facing portal is a separate app (`customer-app`).
 
 **Stack:** Next.js 16 (App Router), JavaScript, CSS Modules.
 

@@ -33,7 +33,7 @@ export async function login(_prevState, formData) {
   }
 
   if (!STAFF_ROLES.includes(data.user.role)) {
-    return { error: "This portal is for Cynosure staff. Customers should use the customer portal.", email, role };
+    return { error: "This portal is for Reviens Tech staff. Customers should use the customer portal.", email, role };
   }
 
   await createSession(data.accessToken);

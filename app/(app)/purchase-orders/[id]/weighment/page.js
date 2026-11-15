@@ -7,7 +7,7 @@ import { getWeighment } from "@/lib/closeout";
 import { formatDate } from "@/lib/po-constants";
 import { getPurchaseOrder } from "@/lib/purchase-orders";
 
-export const metadata = { title: "Weighment — Cynosure MIS" };
+export const metadata = { title: "Weighment — Lifecycle & Traceability ERP" };
 
 const kg = (n) => (n === null ? "—" : `${n} kg`);
 

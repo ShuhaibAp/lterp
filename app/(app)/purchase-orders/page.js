@@ -9,7 +9,7 @@ import styles from "./po.module.css";
 
 const COUNTDOWN_CLASS = { info: "countdownInfo", warn: "countdownWarn", bad: "countdownBad" };
 
-export const metadata = { title: "PO List — Cynosure MIS" };
+export const metadata = { title: "PO List — Lifecycle & Traceability ERP" };
 
 function pageHref({ search, status }, page) {
   const qs = new URLSearchParams();

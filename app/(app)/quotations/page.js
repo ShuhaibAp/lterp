@@ -6,7 +6,7 @@ import { formatDate } from "@/lib/po-constants";
 import { listPendingQuotations } from "@/lib/quotation";
 import poStyles from "../purchase-orders/po.module.css";
 
-export const metadata = { title: "Approvals — Cynosure MIS" };
+export const metadata = { title: "Approvals — Lifecycle & Traceability ERP" };
 
 export default async function ApprovalQueuePage() {
   await requireRole("Admin");

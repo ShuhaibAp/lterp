@@ -8,9 +8,9 @@ const barlow = Barlow({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://cynosure.reviens.in"),
-  title: "Cynosure MIS",
-  description: "Cynosure Recycling — MIS portal",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  title: "Lifecycle & Traceability ERP",
+  description: "Reviens Tech — MIS portal",
 };
 
 export default function RootLayout({ children }) {

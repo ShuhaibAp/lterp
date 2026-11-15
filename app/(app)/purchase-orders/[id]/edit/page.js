@@ -4,7 +4,7 @@ import { requireRole } from "@/lib/dal";
 import { getCustomerAccess, getPurchaseOrder, getServiceTypes } from "@/lib/purchase-orders";
 import styles from "../../po.module.css";
 
-export const metadata = { title: "Edit PO — Cynosure MIS" };
+export const metadata = { title: "Edit PO — Lifecycle & Traceability ERP" };
 
 export default async function EditPurchaseOrderPage({ params }) {
   await requireRole("BD Team");

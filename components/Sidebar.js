@@ -15,7 +15,7 @@ export default function Sidebar({ role, badges = {}, open, onNavigate }) {
   return (
     <aside className={`${styles.sidebar} ${open ? styles.open : ""}`}>
       <div className={styles.brand}>
-        <Image src="/cynosure-logo.png" alt="Cynosure Recycling Private Limited" width={207} height={40} priority />
+        <Image src="/brand-logo.png" alt="Reviens Tech" width={207} height={56} priority />
         <span className={styles.portal}>MIS Portal</span>
       </div>
       <nav className={styles.nav} aria-label="Main">
@@ -41,7 +41,7 @@ export default function Sidebar({ role, badges = {}, open, onNavigate }) {
           );
         })}
       </nav>
-      <div className={styles.foot}>Cynosure Recycling Pvt. Ltd.</div>
+      <div className={styles.foot}>Reviens Tech</div>
     </aside>
   );
 }

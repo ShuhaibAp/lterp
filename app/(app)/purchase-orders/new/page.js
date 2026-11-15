@@ -4,7 +4,7 @@ import { getOrderRequest, listReturningCustomers } from "@/lib/order-requests";
 import { getServiceTypes } from "@/lib/purchase-orders";
 import styles from "../po.module.css";
 
-export const metadata = { title: "New PO — Cynosure MIS" };
+export const metadata = { title: "New PO — Lifecycle & Traceability ERP" };
 
 export default async function NewPurchaseOrderPage({ searchParams }) {
   await requireRole("BD Team");
