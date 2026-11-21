@@ -37,7 +37,7 @@ export default function LoginForm() {
           name="email"
           type="email"
           autoComplete="username"
-          placeholder="you@company.com"
+          placeholder="you@cynosure.com"
           defaultValue={state?.email ?? ""}
           autoFocus
           required

@@ -4,7 +4,7 @@ import { getUser } from "@/lib/admin";
 import { requireRole } from "@/lib/dal";
 import styles from "../../../purchase-orders/po.module.css";
 
-export const metadata = { title: "Edit user — Lifecycle & Traceability ERP" };
+export const metadata = { title: "Edit user — Cynosure MIS" };
 
 export default async function EditUserPage({ params }) {
   const me = await requireRole("Admin");

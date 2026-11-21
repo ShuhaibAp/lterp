@@ -9,7 +9,7 @@ import { formatDate } from "@/lib/po-constants";
 import { getPickupRequest } from "@/lib/pickup";
 import { getPurchaseOrder } from "@/lib/purchase-orders";
 
-export const metadata = { title: "Pickup Request — Lifecycle & Traceability ERP" };
+export const metadata = { title: "Pickup Request — Cynosure MIS" };
 
 const FLASH = {
   generated: "Inspection Report generated. The PO has moved to the Operations stage.",

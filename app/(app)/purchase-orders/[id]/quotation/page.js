@@ -16,7 +16,7 @@ import { getPurchaseOrder } from "@/lib/purchase-orders";
 import { getUoms } from "@/lib/inspection";
 import { getQuotation } from "@/lib/quotation";
 
-export const metadata = { title: "Quotation — Lifecycle & Traceability ERP" };
+export const metadata = { title: "Quotation — Cynosure MIS" };
 
 const FLASH = {
   submitted: "Quotation submitted for Admin approval.",

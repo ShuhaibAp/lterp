@@ -5,7 +5,7 @@ import { listOrderRequests } from "@/lib/order-requests";
 import { formatDate } from "@/lib/po-constants";
 import styles from "../purchase-orders/po.module.css";
 
-export const metadata = { title: "Order requests — Lifecycle & Traceability ERP" };
+export const metadata = { title: "Order requests — Cynosure MIS" };
 
 export default async function OrderRequestsPage() {
   const user = await requireRole("BD Team", "Admin");

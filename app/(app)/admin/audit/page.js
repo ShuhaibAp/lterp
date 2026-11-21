@@ -6,7 +6,7 @@ import { formatDate, STAFF_ROLES } from "@/lib/po-constants";
 import admin from "@/components/admin/admin.module.css";
 import styles from "../../purchase-orders/po.module.css";
 
-export const metadata = { title: "Audit log — Lifecycle & Traceability ERP" };
+export const metadata = { title: "Audit log — Cynosure MIS" };
 
 const FILTERS = ["poNumber", "action", "actor", "role", "from", "to"];
 const ROLE_OPTIONS = [...STAFF_ROLES, "Customer"];

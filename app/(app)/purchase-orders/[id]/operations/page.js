@@ -9,7 +9,7 @@ import { getOperationsRecord } from "@/lib/operations";
 import { getPickupRequest } from "@/lib/pickup";
 import { getPurchaseOrder } from "@/lib/purchase-orders";
 
-export const metadata = { title: "Operations — Lifecycle & Traceability ERP" };
+export const metadata = { title: "Operations — Cynosure MIS" };
 
 const FLASH = {
   completed: "Operations marked complete. The PO has moved to the Factory stage.",

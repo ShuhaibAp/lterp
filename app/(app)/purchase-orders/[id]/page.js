@@ -10,7 +10,7 @@ import styles from "../po.module.css";
 
 const AFTER_APPROVAL = ["Pickup", "Operations", "Factory", "Weighment", "AOR", "Final Reports"];
 
-export const metadata = { title: "Purchase Order — Lifecycle & Traceability ERP" };
+export const metadata = { title: "Purchase Order — Cynosure MIS" };
 
 function Field({ label, value, locked, full }) {
   return (
