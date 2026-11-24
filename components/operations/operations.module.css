@@ -27,6 +27,11 @@
   margin-top: 4px;
 }
 
+.form6Row a {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 .countdown {
   display: inline-flex;
   align-items: center;

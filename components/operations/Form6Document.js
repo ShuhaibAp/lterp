@@ -8,8 +8,7 @@ import styles from "./operations.module.css";
 
 /**
  * Optional scanned copy (PDF or a camera photo) of the Form 6 manifest, kept separate from the
- * required Form 6 *Number* field. `capture="environment"` opens the phone's camera directly when
- * the browser supports it; it's just a hint, so it degrades to the normal file/photo picker.
+ * required Form 6 *Number* field.
  */
 export default function Form6Document({ poId, document: doc, editable }) {
   const [current, setCurrent] = useState(doc);
@@ -33,18 +32,28 @@ export default function Form6Document({ poId, document: doc, editable }) {
     const body = new FormData();
     body.append("form6", file);
     setBusy(true);
-    const result = await uploadForm6Document(poId, body);
-    setBusy(false);
-    if (result.operations) setCurrent(result.operations.form6Document);
-    else setProblem(result.message ?? "The file could not be uploaded.");
+    try {
+      const result = await uploadForm6Document(poId, body);
+      if (result?.operations) setCurrent(result.operations.form6Document);
+      else setProblem(result?.message ?? "The file could not be uploaded.");
+    } catch {
+      setProblem("The file could not be uploaded. If it is a large photo, try a smaller file (under 4 MB) and try again.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function remove() {
     setBusy(true);
-    const result = await removeForm6Document(poId);
-    setBusy(false);
-    if (result.operations) setCurrent(result.operations.form6Document);
-    else setProblem(result.message ?? "The file could not be removed.");
+    try {
+      const result = await removeForm6Document(poId);
+      if (result?.operations) setCurrent(result.operations.form6Document);
+      else setProblem(result?.message ?? "The file could not be removed.");
+    } catch {
+      setProblem("The file could not be removed. Please try again.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -74,7 +83,6 @@ export default function Form6Document({ poId, document: doc, editable }) {
             ref={input}
             type="file"
             accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
-            capture="environment"
             hidden
             onChange={(e) => {
               upload(e.target.files);

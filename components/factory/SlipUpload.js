@@ -31,18 +31,28 @@ export default function SlipUpload({ poId, kind, label, file, editable, onChange
     const body = new FormData();
     body.append("slip", picked);
     setBusy(true);
-    const result = await uploadFactorySlip(poId, kind, body);
-    setBusy(false);
-    if (result.factory) onChange?.(result.factory);
-    else setProblem(result.message ?? "The file could not be uploaded.");
+    try {
+      const result = await uploadFactorySlip(poId, kind, body);
+      if (result?.factory) onChange?.(result.factory);
+      else setProblem(result?.message ?? "The file could not be uploaded.");
+    } catch {
+      setProblem("The file could not be uploaded. If it is a large photo, try a smaller file (under 4 MB) and try again.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function remove() {
     setBusy(true);
-    const result = await removeFactorySlip(poId, kind);
-    setBusy(false);
-    if (result.factory) onChange?.(result.factory);
-    else setProblem(result.message ?? "The file could not be removed.");
+    try {
+      const result = await removeFactorySlip(poId, kind);
+      if (result?.factory) onChange?.(result.factory);
+      else setProblem(result?.message ?? "The file could not be removed.");
+    } catch {
+      setProblem("The file could not be removed. Please try again.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -67,7 +77,6 @@ export default function SlipUpload({ poId, kind, label, file, editable, onChange
             ref={input}
             type="file"
             accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
-            capture="environment"
             hidden
             onChange={(e) => {
               upload(e.target.files);
