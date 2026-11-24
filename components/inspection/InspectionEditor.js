@@ -41,11 +41,24 @@ export default function InspectionEditor({ poId, initial, uoms: initialUoms }) {
   const photosFlush = useRef(null);
 
   const steps = remainingSteps(rows, acknowledged, expense);
-  const latestPayload = useRef(null);
-  latestPayload.current = toPayload(rows, acknowledged, expense);
+
+  // Exclude server-assigned `id` from the autosave snapshot so attaching ids to newly created
+  // rows after a save doesn't trigger a redundant second save, and keep raw typed strings so
+  // intermediate decimals ("10.", "10.0") are never overwritten by Number() normalization.
+  const draftKey = JSON.stringify({
+    lines: rows.map((r) => ({
+      materialName: r.materialName,
+      uom: r.uom,
+      clientQuantity: r.clientQuantity,
+      inspectedQuantity: r.inspectedQuantity,
+      remarks: r.remarks,
+    })),
+    acknowledged,
+    expense,
+  });
 
   const { status: saveStatus, flush } = useAutosave({
-    value: JSON.stringify(toPayload(rows, acknowledged, expense)),
+    value: draftKey,
     onSave: async () => {
       const found = validateRows(rows, acknowledged, expense, uoms);
       setErrors(found);
@@ -54,21 +67,23 @@ export default function InspectionEditor({ poId, initial, uoms: initialUoms }) {
         return false;
       }
       const sentPayload = toPayload(rows, acknowledged, expense);
-      const sentKey = JSON.stringify(sentPayload);
       const sentKeys = rows.map((r) => r.key);
       const result = await saveInspection(poId, sentPayload);
       if (result?.inspection) {
-        if (JSON.stringify(latestPayload.current) === sentKey) {
-          // Nothing changed while saving - safe to sync with the server's copy.
-          setRows(result.inspection.lines.map(rowFromLine));
-          setAcknowledged(result.inspection.acknowledged);
-          setExpense(result.inspection.expenseTotal === null ? "" : String(result.inspection.expenseTotal));
-        } else {
-          // The user kept typing during the save: don't overwrite their input with the stale
-          // response. Only attach server ids to newly-saved rows so they aren't duplicated.
-          const idByKey = new Map(sentKeys.map((k, i) => [k, result.inspection.lines[i]?.id]));
-          setRows((cur) => cur.map((r) => (r.id ? r : { ...r, id: idByKey.get(r.key) ?? null })));
-        }
+        // Never overwrite the user's typed values or change row.key (which would remount inputs
+        // and steal focus). Only attach server ids onto newly created rows that don't have one yet.
+        const idByKey = new Map(sentKeys.map((k, i) => [k, result.inspection.lines[i]?.id ?? null]));
+        setRows((cur) => {
+          let changed = false;
+          const next = cur.map((r) => {
+            if (r.id) return r;
+            const assigned = idByKey.get(r.key);
+            if (!assigned) return r;
+            changed = true;
+            return { ...r, id: assigned };
+          });
+          return changed ? next : cur;
+        });
         setErrors({});
         return true;
       }

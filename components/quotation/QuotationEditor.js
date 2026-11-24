@@ -49,8 +49,21 @@ export default function QuotationEditor({ poId, quotation, uoms: initialUoms, re
   const totals = quotationTotals(lineTotals, gst);
   const steps = remainingSteps(rows);
 
+  // Exclude server-assigned `id` from the autosave snapshot so attaching ids to newly created
+  // manual rows doesn't trigger a second save, and never overwrite typed input on save response.
+  const draftKey = JSON.stringify({
+    lines: rows.map((r) => ({
+      materialName: r.materialName,
+      uom: r.uom,
+      quantity: r.quantity,
+      unitPrice: r.unitPrice,
+    })),
+    terms,
+    gst,
+  });
+
   const { status: saveStatus, flush } = useAutosave({
-    value: JSON.stringify(toPayload(rows, manual, terms, gst)),
+    value: draftKey,
     onSave: async () => {
       const found = validateQuotation(rows, manual, terms, gst, uoms);
       setErrors(found);
@@ -58,11 +71,23 @@ export default function QuotationEditor({ poId, quotation, uoms: initialUoms, re
         setMessage({ kind: "error", text: "Fix the highlighted fields and try again." });
         return false;
       }
+      const sentKeys = rows.map((r) => r.key);
       const result = await saveQuotation(poId, toPayload(rows, manual, terms, gst));
       if (result?.quotation) {
-        setRows(result.quotation.lines.map(rowFromLine));
-        setTerms(result.quotation.terms);
-        setGst(asText(result.quotation.gstPercent));
+        // Never overwrite the user's typed prices/GST/terms or change row.key (which would remount
+        // inputs and flicker/steal focus). Only attach server ids onto newly created rows.
+        const idByKey = new Map(sentKeys.map((k, i) => [k, result.quotation.lines[i]?.id ?? null]));
+        setRows((cur) => {
+          let changed = false;
+          const next = cur.map((r) => {
+            if (r.id) return r;
+            const assigned = idByKey.get(r.key);
+            if (!assigned) return r;
+            changed = true;
+            return { ...r, id: assigned };
+          });
+          return changed ? next : cur;
+        });
         setErrors({});
         return true;
       }
