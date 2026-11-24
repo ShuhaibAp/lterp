@@ -9,7 +9,7 @@ const barlow = Barlow({
 });
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://cynosure.reviens.in"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || brand.defaultSiteUrl),
   title: {
     default: brand.appName,
     template: `%s — ${brand.appName}`,
@@ -18,6 +18,13 @@ export const metadata = {
   icons: {
     icon: brand.iconSrc,
     apple: brand.appleIconSrc,
+  },
+  openGraph: {
+    images: [{ url: brand.ogImageSrc, width: 1200, height: 630, alt: brand.companyName }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [brand.ogImageSrc],
   },
 };
 
