@@ -46,7 +46,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #7c7e7d;
+  color: var(--sidebar-muted);
   padding: 0 12px 10px;
 }
 
@@ -83,7 +83,7 @@
 
 .active,
 .active:hover {
-  background: rgba(243, 118, 48, 0.14);
+  background: var(--sidebar-active-bg);
   color: #fff;
   font-weight: 600;
 }
@@ -111,7 +111,7 @@
   padding: 18px 26px;
   border-top: 1px solid var(--sidebar-border);
   font-size: 12.5px;
-  color: #7c7e7d;
+  color: var(--sidebar-muted);
 }
 
 @media (max-width: 960px) {

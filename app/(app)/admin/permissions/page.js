@@ -3,7 +3,7 @@ import { getPermissionMatrix } from "@/lib/admin";
 import admin from "@/components/admin/admin.module.css";
 import styles from "../../purchase-orders/po.module.css";
 
-export const metadata = { title: "Permissions — Cynosure MIS" };
+export const metadata = { title: "Permissions" };
 
 export default async function PermissionsPage() {
   await requireRole("Admin");

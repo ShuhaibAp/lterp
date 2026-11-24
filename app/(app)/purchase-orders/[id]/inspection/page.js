@@ -7,7 +7,7 @@ import { requireRole } from "@/lib/dal";
 import { getInspection, getUoms } from "@/lib/inspection";
 import { getPurchaseOrder } from "@/lib/purchase-orders";
 
-export const metadata = { title: "Inspection — Cynosure MIS" };
+export const metadata = { title: "Inspection" };
 
 export default async function InspectionPage({ params, searchParams }) {
   const user = await requireRole("BD Team", "Admin", "Operations Team", "Factory Team");

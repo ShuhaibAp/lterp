@@ -4,7 +4,7 @@ import { requireRole } from "@/lib/dal";
 import { listUsers } from "@/lib/admin";
 import styles from "../../purchase-orders/po.module.css";
 
-export const metadata = { title: "Users — Cynosure MIS" };
+export const metadata = { title: "Users" };
 
 export default async function UsersPage({ searchParams }) {
   const me = await requireRole("Admin");

@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { apiFetch } from "@/lib/api";
+import { brand } from "@/lib/brand";
 import { createSession, deleteSession } from "@/lib/session";
 import { STAFF_ROLES } from "@/lib/dal";
 
@@ -33,7 +34,7 @@ export async function login(_prevState, formData) {
   }
 
   if (!STAFF_ROLES.includes(data.user.role)) {
-    return { error: "This portal is for Cynosure staff. Customers should use the customer portal.", email, role };
+    return { error: `This portal is for ${brand.staffLabel} staff. Customers should use the customer portal.`, email, role };
   }
 
   await createSession(data.accessToken);

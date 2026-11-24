@@ -9,7 +9,7 @@ import { getPoSummary, listPurchaseOrders } from "@/lib/purchase-orders";
 import { listPendingQuotations } from "@/lib/quotation";
 import styles from "./dashboard.module.css";
 
-export const metadata = { title: "Dashboard — Cynosure MIS" };
+export const metadata = { title: "Dashboard" };
 
 function greeting() {
   const hour = Number(

@@ -2,7 +2,7 @@ import UserForm from "@/components/admin/UserForm";
 import { requireRole } from "@/lib/dal";
 import styles from "../../../purchase-orders/po.module.css";
 
-export const metadata = { title: "New user — Cynosure MIS" };
+export const metadata = { title: "New user" };
 
 export default async function NewUserPage() {
   await requireRole("Admin");

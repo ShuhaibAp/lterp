@@ -2,10 +2,11 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/dal";
 import { PO_STAGES } from "@/lib/po-constants";
+import { brand } from "@/lib/brand";
 import LoginForm from "./login-form";
 import styles from "./login.module.css";
 
-export const metadata = { title: "Sign in — Cynosure MIS" };
+export const metadata = { title: "Sign in" };
 
 export default async function LoginPage() {
   const user = await getUser();
@@ -15,7 +16,7 @@ export default async function LoginPage() {
     <main className={styles.page}>
       <section className={styles.aside}>
         <div className={styles.logoCard}>
-          <Image src="/cynosure-logo.png" alt="Cynosure Recycling Private Limited" width={207} height={40} priority />
+          <Image src={brand.logoSrc} alt={brand.companyName} width={brand.logoWidth} height={brand.logoHeight} priority />
         </div>
         <div className={styles.pitch}>
           <h2 className={styles.headline}>Every e-waste order, tracked from registration to final report.</h2>
@@ -29,17 +30,17 @@ export default async function LoginPage() {
             ))}
           </ol>
         </div>
-        <p className={styles.asideFoot}>Cynosure Recycling Private Limited</p>
+        <p className={styles.asideFoot}>{brand.companyName}</p>
       </section>
 
       <section className={styles.formSide}>
         <div className={styles.panel}>
           <div className={styles.mobileBrand}>
-            <Image src="/cynosure-logo.png" alt="Cynosure Recycling Private Limited" width={207} height={40} priority />
+            <Image src={brand.logoSrc} alt={brand.companyName} width={brand.logoWidth} height={brand.logoHeight} priority />
           </div>
           <span className={styles.tag}>MIS Portal</span>
           <h1 className={styles.title}>Welcome back</h1>
-          <p className={styles.subtitle}>Sign in with your Cynosure staff account to continue.</p>
+          <p className={styles.subtitle}>{brand.loginSubtitle}</p>
           <LoginForm />
         </div>
       </section>

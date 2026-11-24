@@ -1,4 +1,5 @@
 import { Barlow } from "next/font/google";
+import { brand } from "@/lib/brand";
 import "./globals.css";
 
 const barlow = Barlow({
@@ -8,14 +9,21 @@ const barlow = Barlow({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://cynosure.reviens.in"),
-  title: "Cynosure MIS",
-  description: "Cynosure Recycling — MIS portal",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://cynosure.reviens.in"),
+  title: {
+    default: brand.appName,
+    template: `%s — ${brand.appName}`,
+  },
+  description: brand.description,
+  icons: {
+    icon: brand.iconSrc,
+    apple: brand.appleIconSrc,
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={barlow.variable}>
+    <html lang="en" data-theme={brand.theme} className={barlow.variable}>
       <body>{children}</body>
     </html>
   );

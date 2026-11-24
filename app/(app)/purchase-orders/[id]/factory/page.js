@@ -8,7 +8,7 @@ import { getFactoryRecord } from "@/lib/factory";
 import { formatDate } from "@/lib/po-constants";
 import { getPurchaseOrder } from "@/lib/purchase-orders";
 
-export const metadata = { title: "Factory — Cynosure MIS" };
+export const metadata = { title: "Factory" };
 
 const FLASH = {
   completed: "Factory marked complete. The weighment cross-check has run and the AOR has been created.",

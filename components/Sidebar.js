@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { brand } from "@/lib/brand";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { activeHref, navForRole } from "@/lib/nav";
@@ -15,7 +16,7 @@ export default function Sidebar({ role, badges = {}, open, onNavigate }) {
   return (
     <aside className={`${styles.sidebar} ${open ? styles.open : ""}`}>
       <div className={styles.brand}>
-        <Image src="/cynosure-logo.png" alt="Cynosure Recycling Private Limited" width={207} height={40} priority />
+        <Image src={brand.logoSrc} alt={brand.companyName} width={brand.logoWidth} height={brand.logoHeight} priority />
         <span className={styles.portal}>MIS Portal</span>
       </div>
       <nav className={styles.nav} aria-label="Main">
@@ -41,7 +42,7 @@ export default function Sidebar({ role, badges = {}, open, onNavigate }) {
           );
         })}
       </nav>
-      <div className={styles.foot}>Cynosure Recycling Pvt. Ltd.</div>
+      <div className={styles.foot}>{brand.companyShort}</div>
     </aside>
   );
 }

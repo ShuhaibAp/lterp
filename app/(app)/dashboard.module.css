@@ -206,7 +206,7 @@
 }
 
 .list li + li {
-  border-top: 1px solid #efedea;
+  border-top: 1px solid var(--divider);
 }
 
 .row {

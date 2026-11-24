@@ -7,7 +7,7 @@ import { getFinalReports } from "@/lib/closeout";
 import { formatDate } from "@/lib/po-constants";
 import { getPurchaseOrder } from "@/lib/purchase-orders";
 
-export const metadata = { title: "Final Reports — Cynosure MIS" };
+export const metadata = { title: "Final Reports" };
 
 export default async function ReportsPage({ params, searchParams }) {
   const user = await requireRole("BD Team", "Admin", "Operations Team", "Factory Team");

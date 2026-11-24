@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { login } from "@/app/actions/auth";
+import { brand } from "@/lib/brand";
 import { STAFF_ROLES } from "@/lib/po-constants";
 import styles from "./login.module.css";
 
@@ -37,7 +38,7 @@ export default function LoginForm() {
           name="email"
           type="email"
           autoComplete="username"
-          placeholder="you@cynosure.com"
+          placeholder={brand.emailPlaceholder}
           defaultValue={state?.email ?? ""}
           autoFocus
           required
